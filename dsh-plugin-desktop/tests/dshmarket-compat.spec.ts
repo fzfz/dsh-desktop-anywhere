@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { Readable } from 'node:stream'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 interface DesktopOperationHandle {
   readonly stdout: NodeJS.ReadableStream
@@ -41,6 +41,13 @@ type MarketRoute = (request: object, response: object) => void | Promise<void>
 
 const originalFetch = globalThis.fetch
 const temporaryProfiles: string[] = []
+
+beforeEach(() => {
+  for (const key of [
+    "http_proxy", "HTTP_PROXY", "https_proxy", "HTTPS_PROXY",
+    "npm_config_proxy", "npm_config_https_proxy",
+  ]) vi.stubEnv(key, undefined)
+})
 
 afterEach(() => {
   globalThis.fetch = originalFetch

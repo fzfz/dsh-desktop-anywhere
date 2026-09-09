@@ -3,7 +3,7 @@ import { PassThrough } from 'node:stream'
 import type { ChildProcess, SpawnOptions } from 'node:child_process'
 import { delimiter } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   formatProfileMaterializationFailure,
   materializeProfile,
@@ -42,6 +42,9 @@ function options(spawn: ProfileMaterializerSpawn): ProfileMaterializerOptions {
     spawn,
   }
 }
+
+beforeEach(() => { vi.spyOn(process, 'kill').mockReturnValue(true) })
+afterEach(() => { vi.restoreAllMocks() })
 
 describe('profile materializer', () => {
   it('runs the fixed packaged pnpm command with the desktop lifecycle environment', async () => {
@@ -149,7 +152,12 @@ describe('profile materializer', () => {
     const controller = new AbortController()
     const resultPromise = materializeProfile({ ...options(spawn), signal: controller.signal })
     controller.abort()
-    expect(child.kill).toHaveBeenCalled()
+    if (process.platform === 'win32') {
+      expect(child.kill).toHaveBeenCalledWith('SIGTERM')
+    } else {
+      expect(process.kill).toHaveBeenCalledWith(-child.pid, 'SIGTERM')
+      expect(child.kill).not.toHaveBeenCalled()
+    }
     child.emit('close', null, 'SIGTERM')
     await expect(resultPromise).rejects.toThrow('aborted')
   })
