@@ -11,6 +11,11 @@ import WebServer, {
 import { decideDesktopBrowserAccess } from './desktop-browser-access.ts'
 import { DESKTOP_WEB_PORT_RETRY_LIMIT } from './desktop-port.ts'
 
+export interface DesktopWebRoute extends WebRoute {
+  /** The route handler validates its own request credential before doing work. */
+  readonly desktopBrowserAccess?: 'route-authenticated'
+}
+
 function isAddressInUse(cause: unknown): boolean {
   return (cause as NodeJS.ErrnoException | null)?.code === 'EADDRINUSE'
 }
@@ -66,11 +71,14 @@ export class DesktopWebServer extends WebServer {
     return access === undefined || decideDesktopBrowserAccess(access, request) !== 'denied'
   }
 
-  override register(route: WebRoute): () => void {
+  override register(route: DesktopWebRoute): () => void {
+    const { desktopBrowserAccess, ...upstreamRoute } = route
     return super.register({
-      ...route,
+      ...upstreamRoute,
       handler: async (req, res) => {
-        if (!this.permits(req)) return rejectBrowserRequest(res)
+        if (desktopBrowserAccess !== 'route-authenticated' && !this.permits(req)) {
+          return rejectBrowserRequest(res)
+        }
         await route.handler(req, res)
       },
     })

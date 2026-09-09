@@ -138,6 +138,34 @@ describe('Desktop WebServer browser gate', () => {
     await expect(fallback.text()).resolves.toBe('fallback')
   })
 
+  it('lets an explicitly route-authenticated HTTP route enforce its own credentials', async () => {
+    const access = createDesktopBrowserAccess(false, Buffer.alloc(32, 6).toString('base64url'))
+    const server = await startWebServer(access)
+    server.register({
+      kind: 'exact',
+      path: '/api/managed-cli',
+      desktopBrowserAccess: 'route-authenticated',
+      handler: (request, response) => {
+        response.statusCode = request.headers.authorization === 'Bearer valid' ? 200 : 401
+        response.end()
+      },
+    })
+    server.register({
+      kind: 'exact',
+      path: '/api/private',
+      handler: (_request, response) => { response.end() },
+    })
+    const root = `http://127.0.0.1:${String(server.port)}`
+
+    expect((await fetch(`${root}/api/managed-cli`)).status).toBe(401)
+    expect((await fetch(`${root}/api/managed-cli`, {
+      headers: { authorization: 'Bearer valid' },
+    })).status).toBe(200)
+    expect((await fetch(`${root}/api/private`, {
+      headers: { authorization: 'Bearer valid' },
+    })).status).toBe(403)
+  })
+
   it('allows marker-free browser routes but rejects Desktop marker impersonation', async () => {
     const access = createDesktopBrowserAccess(true, Buffer.alloc(32, 4).toString('base64url'))
     const server = await startWebServer(access)
