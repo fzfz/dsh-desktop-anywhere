@@ -1,0 +1,28 @@
+diff --git a/lib/index.js b/lib/index.js
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -1644,8 +1644,12 @@ function reasoningInfo(model, defaultLevel) {
+ 	} };
+ }
+ /** Merge deployment headers while removing case-insensitive attribution collisions. */
+-function requestHeaders(headers) {
+-	const attribution = attributionHeaders();
++function requestHeaders(headers, sessionId) {
++	const sessionHeader = "x-deepseek-harness-session-id";
++	const attribution = {
++		...attributionHeaders(),
++		...sessionId === void 0 ? {} : { [sessionHeader]: String(sessionId) }
++	};
+-	const reserved = new Set(Object.keys(attribution).map((name) => name.toLowerCase()));
++	const reserved = new Set([...Object.keys(attribution), sessionHeader].map((name) => name.toLowerCase()));
+ 	return {
+ 		...Object.fromEntries(Object.entries(headers ?? {}).filter(([name]) => !reserved.has(name.toLowerCase()))),
+@@ -1792,7 +1796,7 @@ var PiAiAdapter = class extends LlmAdapter {
+ 					...options.maxTokens === void 0 ? {} : { maxTokens: options.maxTokens },
+ 					...options.sessionId === void 0 ? {} : { sessionId: String(options.sessionId) },
+ 					signal: watchdog.signal,
+-					headers: requestHeaders(profile.headers)
++					headers: requestHeaders(profile.headers, options.sessionId)
+ 				}), model.contextWindow, options.signal)[Symbol.asyncIterator]();
+ 				let exhausted = false;
+ 				try {

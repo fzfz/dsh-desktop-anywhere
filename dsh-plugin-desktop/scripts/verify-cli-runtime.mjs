@@ -146,7 +146,7 @@ function runPackagedPnpmShim() {
       environment: env,
     })
     assertNoRunnerEnvironment('pnpm Host PATH installation', env)
-    const result = runPnpm(env, ['--version'])
+    const result = runPnpm(env, ['--version'], stateRoot)
     verifyResult('pnpm PATH shim', result, pnpmVersion)
     verifyLifecycleEnvironment(stateRoot, installation, env)
     assertNoRunnerEnvironment('pnpm Host PATH after child exit', env)
