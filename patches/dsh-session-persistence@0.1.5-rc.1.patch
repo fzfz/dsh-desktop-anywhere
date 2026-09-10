@@ -1,0 +1,30 @@
+diff --git a/lib/index.js b/lib/index.js
+index 485fe4a474..25a51aaf96 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -262,6 +262,10 @@ var SessionPersistence = class extends Service {
+ 	constructor(ctx) {
+ 		super(ctx, "sessionPersistence");
+ 	}
++	/** Permanently remove one stored Session when the backend supports deletion. */
++	delete(_id) {
++		return Promise.reject(/* @__PURE__ */ new Error("this session persistence backend does not support deletion"));
++	}
+ };
+ //#endregion
+ export { SessionAlreadyExistsError, SessionAlreadyOwnedError, SessionFormatUnsupportedError, SessionHandleClosedError, SessionOwnershipLostError, SessionPersistence, SessionPersistence as default, SessionPersistenceCorruptionError, SessionPersistenceNotFoundError, SessionPersistenceRevision, SessionReadOnlyError, assertContiguous, assertStoredId, assertVersion, materializeAppendBatch, materializeCreateHeader, sessionFormatVersionRefusal, validateStoredEvents };
+diff --git a/lib/types/index.d.ts b/lib/types/index.d.ts
+index 0c0891f1ce..bc68eb31b5 100644
+--- a/lib/types/index.d.ts
++++ b/lib/types/index.d.ts
+@@ -153,6 +153,8 @@ export declare abstract class SessionPersistence extends Service {
+      * @returns one snapshot per stored session.
+      */
+     abstract list(options?: SessionPersistenceListOptions): Promise<readonly SessionPersistenceSnapshot[]>;
++    /** Permanently remove one stored Session when the backend supports deletion. */
++    delete(_id: SessionId): Promise<boolean>;
+ }
+ export default SessionPersistence;
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
++//# sourceMappingURL=index.d.ts.map

@@ -1,0 +1,323 @@
+diff --git a/lib/index.js b/lib/index.js
+index 42486dc91b..a8d5b6d150 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -231,12 +231,15 @@ const workspacePendingMutation = z.discriminatedUnion("operation", [z.object({
+ * the registry-global archive set layered over workspace accounting: an
+ * archived session keeps its `sessionIds` slot (unarchiving must restore the
+ * position), so the set never participates in the one-owner accounting
+-* invariant. Defaulted so records written before the field parse unchanged.
++* invariant. `pendingSessionDeletionIds` records ownership-checked deletions whose
++* remaining metadata cleanup may continue after the Session log disappears. Both
++* arrays default so records written before either field parse unchanged.
+ */
+ const workspaceDomainState = z.object({
+ 	initialized: z.boolean(),
+ 	workspaceIds: z.array(workspaceId),
+ 	archivedSessionIds: z.array(z.string().transform((value) => brandString(value))).default([]),
++	pendingSessionDeletionIds: z.array(z.string().transform((value) => brandString(value))).default([]),
+ 	pendingMutation: workspacePendingMutation.optional()
+ });
+ /**
+@@ -253,7 +256,8 @@ const workspaceDomainSpec = defineDomain({
+ 		initial: {
+ 			initialized: false,
+ 			workspaceIds: [],
+-			archivedSessionIds: []
++			archivedSessionIds: [],
++			pendingSessionDeletionIds: []
+ 		}
+ 	},
+ 	tables: { workspaces: domainTable(workspaceRecord) }
+@@ -454,6 +458,44 @@ var WorkspaceRegistry = class extends Service {
+ 			});
+ 		});
+ 	}
++	/** Persist authorization to finish an ordinary Session deletion after its log disappears. */
++	beginSessionDeletion(sessionId) {
++		return this.enqueueOperation(async () => {
++			const state = this.requireState();
++			if (state.pendingSessionDeletionIds.includes(sessionId)) return;
++			await this.setState({
++				...state,
++				pendingSessionDeletionIds: [...state.pendingSessionDeletionIds, sessionId]
++			});
++		});
++	}
++	/** Whether a prior ownership-checked deletion still needs metadata cleanup. */
++	isSessionDeletionPending(sessionId) {
++		return this.requireState().pendingSessionDeletionIds.includes(sessionId);
++	}
++	/** Remove a permanently deleted Session from Workspace, archive, and pending-deletion state. */
++	forgetSession(sessionId) {
++		return this.enqueueOperation(async () => {
++			for (const [workspaceId, record] of this.requireTable().entries()) {
++				if (!record.sessionIds.includes(sessionId)) continue;
++				const entity = this.entities.get(workspaceId);
++				if (entity === void 0) throw new Error(`cannot forget session '${sessionId}': workspace '${workspaceId}' is not published`);
++				await entity.detachSession(sessionId);
++				break;
++			}
++			const state = this.requireState();
++			const archivedSessionIds = state.archivedSessionIds.filter((id) => id !== sessionId);
++			const pendingSessionDeletionIds = state.pendingSessionDeletionIds.filter((id) => id !== sessionId);
++			if (archivedSessionIds.length !== state.archivedSessionIds.length || pendingSessionDeletionIds.length !== state.pendingSessionDeletionIds.length) await this.setState({
++				...state,
++				archivedSessionIds,
++				pendingSessionDeletionIds
++			});
++			this.headers.delete(sessionId);
++			this.sessionPaths.delete(sessionId);
++			this.invalidSessionPaths.delete(sessionId);
++		});
++	}
+ 	/**
+ 	* Whether a session is live, header-indexed, or present in a fresh
+ 	* persistence listing. Only a definite miss returns false — a failing
+@@ -521,7 +563,8 @@ var WorkspaceRegistry = class extends Service {
+ 			await this.setState({
+ 				initialized: true,
+ 				workspaceIds: [id, ...state.workspaceIds],
+-				archivedSessionIds: state.archivedSessionIds
++				archivedSessionIds: state.archivedSessionIds,
++				pendingSessionDeletionIds: state.pendingSessionDeletionIds
+ 			});
+ 		} catch (error) {
+ 			this.entities.delete(id);
+@@ -546,7 +589,8 @@ var WorkspaceRegistry = class extends Service {
+ 		const nextState = {
+ 			initialized: true,
+ 			workspaceIds: state.workspaceIds.filter((workspaceId) => workspaceId !== id),
+-			archivedSessionIds: state.archivedSessionIds
++			archivedSessionIds: state.archivedSessionIds,
++			pendingSessionDeletionIds: state.pendingSessionDeletionIds
+ 		};
+ 		await this.setState({
+ 			...nextState,
+@@ -589,7 +633,8 @@ var WorkspaceRegistry = class extends Service {
+ 		await this.setState({
+ 			initialized: state.initialized,
+ 			workspaceIds: state.workspaceIds,
+-			archivedSessionIds: state.archivedSessionIds
++			archivedSessionIds: state.archivedSessionIds,
++			pendingSessionDeletionIds: state.pendingSessionDeletionIds
+ 		});
+ 	}
+ 	async bootstrap(headers) {
+@@ -657,12 +702,14 @@ var WorkspaceRegistry = class extends Service {
+ 		if (!sameIds(state.workspaceIds, workspaceIds)) await this.setState({
+ 			initialized: false,
+ 			workspaceIds,
+-			archivedSessionIds: state.archivedSessionIds
++			archivedSessionIds: state.archivedSessionIds,
++			pendingSessionDeletionIds: state.pendingSessionDeletionIds
+ 		});
+ 		await this.setState({
+ 			initialized: true,
+ 			workspaceIds,
+-			archivedSessionIds: state.archivedSessionIds
++			archivedSessionIds: state.archivedSessionIds,
++			pendingSessionDeletionIds: state.pendingSessionDeletionIds
+ 		});
+ 	}
+ 	validateStoredState(state) {
+diff --git a/lib/types/index.d.ts b/lib/types/index.d.ts
+index fc0fa1b05f..3a3ba81018 100644
+--- a/lib/types/index.d.ts
++++ b/lib/types/index.d.ts
+@@ -122,6 +122,12 @@ export declare class WorkspaceRegistry extends Service {
+      * @returns resolution after durability.
+      */
+     archiveSession(sessionId: SessionId): Promise<void>;
++    /** Persist authorization to finish an ordinary Session deletion after its log disappears. */
++    beginSessionDeletion(sessionId: SessionId): Promise<void>;
++    /** Whether a prior ownership-checked deletion still needs metadata cleanup. */
++    isSessionDeletionPending(sessionId: SessionId): boolean;
++    /** Remove a permanently deleted Session from Workspace, archive, and pending-deletion state. */
++    forgetSession(sessionId: SessionId): Promise<void>;
+     /**
+      * Whether a session is live, header-indexed, or present in a fresh
+      * persistence listing. Only a definite miss returns false — a failing
+@@ -162,4 +168,4 @@ export declare class WorkspaceRegistry extends Service {
+     private enqueueOperation;
+ }
+ export default WorkspaceRegistry;
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
++//# sourceMappingURL=index.d.ts.map
+diff --git a/lib/types/index.js b/lib/types/index.js
+index 8140b8974d..f244ea5949 100644
+--- a/lib/types/index.js
++++ b/lib/types/index.js
+@@ -213,6 +213,51 @@ export class WorkspaceRegistry extends Service {
+             await this.setState({ ...state, archivedSessionIds: [...state.archivedSessionIds, sessionId] });
+         });
+     }
++    /** Persist authorization to finish an ordinary Session deletion after its log disappears. */
++    beginSessionDeletion(sessionId) {
++        return this.enqueueOperation(async () => {
++            const state = this.requireState();
++            if (state.pendingSessionDeletionIds.includes(sessionId))
++                return;
++            await this.setState({
++                ...state,
++                pendingSessionDeletionIds: [...state.pendingSessionDeletionIds, sessionId],
++            });
++        });
++    }
++    /** Whether a prior ownership-checked deletion still needs metadata cleanup. */
++    isSessionDeletionPending(sessionId) {
++        return this.requireState().pendingSessionDeletionIds.includes(sessionId);
++    }
++    /** Remove a permanently deleted Session from Workspace, archive, and pending-deletion state. */
++    forgetSession(sessionId) {
++        return this.enqueueOperation(async () => {
++            for (const [workspaceId, record] of this.requireTable().entries()) {
++                if (!record.sessionIds.includes(sessionId))
++                    continue;
++                const entity = this.entities.get(workspaceId);
++                if (entity === undefined) {
++                    throw new Error(`cannot forget session '${sessionId}': workspace '${workspaceId}' is not published`);
++                }
++                await entity.detachSession(sessionId);
++                break;
++            }
++            const state = this.requireState();
++            const archivedSessionIds = state.archivedSessionIds.filter(id => id !== sessionId);
++            const pendingSessionDeletionIds = state.pendingSessionDeletionIds.filter(id => id !== sessionId);
++            if (archivedSessionIds.length !== state.archivedSessionIds.length
++                || pendingSessionDeletionIds.length !== state.pendingSessionDeletionIds.length) {
++                await this.setState({
++                    ...state,
++                    archivedSessionIds,
++                    pendingSessionDeletionIds,
++                });
++            }
++            this.headers.delete(sessionId);
++            this.sessionPaths.delete(sessionId);
++            this.invalidSessionPaths.delete(sessionId);
++        });
++    }
+     /**
+      * Whether a session is live, header-indexed, or present in a fresh
+      * persistence listing. Only a definite miss returns false — a failing
+@@ -290,6 +335,7 @@ export class WorkspaceRegistry extends Service {
+                 initialized: true,
+                 workspaceIds: [id, ...state.workspaceIds],
+                 archivedSessionIds: state.archivedSessionIds,
++                pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+             });
+         }
+         catch (error) {
+@@ -319,6 +365,7 @@ export class WorkspaceRegistry extends Service {
+             initialized: true,
+             workspaceIds: state.workspaceIds.filter(workspaceId => workspaceId !== id),
+             archivedSessionIds: state.archivedSessionIds,
++            pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+         };
+         await this.setState({
+             ...nextState,
+@@ -372,6 +419,7 @@ export class WorkspaceRegistry extends Service {
+             initialized: state.initialized,
+             workspaceIds: state.workspaceIds,
+             archivedSessionIds: state.archivedSessionIds,
++            pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+         });
+     }
+     async bootstrap(headers) {
+@@ -455,9 +503,9 @@ export class WorkspaceRegistry extends Service {
+         })
+             .map(([id]) => id);
+         if (!sameIds(state.workspaceIds, workspaceIds)) {
+-            await this.setState({ initialized: false, workspaceIds, archivedSessionIds: state.archivedSessionIds });
++            await this.setState({ initialized: false, workspaceIds, archivedSessionIds: state.archivedSessionIds, pendingSessionDeletionIds: state.pendingSessionDeletionIds });
+         }
+-        await this.setState({ initialized: true, workspaceIds, archivedSessionIds: state.archivedSessionIds });
++        await this.setState({ initialized: true, workspaceIds, archivedSessionIds: state.archivedSessionIds, pendingSessionDeletionIds: state.pendingSessionDeletionIds });
+     }
+     validateStoredState(state) {
+         const table = this.requireTable();
+@@ -601,4 +649,4 @@ export class WorkspaceRegistry extends Service {
+ }
+ const sameSessionIds = (left, right) => left.length === right.length && left.every((id, index) => id === right[index]);
+ export default WorkspaceRegistry;
+-//# sourceMappingURL=index.js.map
+\ No newline at end of file
++//# sourceMappingURL=index.js.map
+diff --git a/lib/types/spec.d.ts b/lib/types/spec.d.ts
+index 8cc60e92cb..b663f40371 100644
+--- a/lib/types/spec.d.ts
++++ b/lib/types/spec.d.ts
+@@ -28,12 +28,15 @@ export type WorkspaceRecord = z.infer<typeof workspaceRecord>;
+  * the registry-global archive set layered over workspace accounting: an
+  * archived session keeps its `sessionIds` slot (unarchiving must restore the
+  * position), so the set never participates in the one-owner accounting
+- * invariant. Defaulted so records written before the field parse unchanged.
++ * invariant. `pendingSessionDeletionIds` records ownership-checked deletions whose
++ * remaining metadata cleanup may continue after the Session log disappears. Both
++ * arrays default so records written before either field parse unchanged.
+  */
+ export declare const workspaceDomainState: z.ZodObject<{
+     initialized: z.ZodBoolean;
+     workspaceIds: z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>>;
+     archivedSessionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
++    pendingSessionDeletionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
+     pendingMutation: z.ZodOptional<z.ZodDiscriminatedUnion<[z.ZodObject<{
+         operation: z.ZodLiteral<"create">;
+         workspaceId: z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>;
+@@ -58,6 +61,7 @@ export declare const workspaceDomainSpec: {
+             initialized: z.ZodBoolean;
+             workspaceIds: z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>>;
+             archivedSessionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
++            pendingSessionDeletionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
+             pendingMutation: z.ZodOptional<z.ZodDiscriminatedUnion<[z.ZodObject<{
+                 operation: z.ZodLiteral<"create">;
+                 workspaceId: z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>;
+@@ -70,6 +74,7 @@ export declare const workspaceDomainSpec: {
+             initialized: boolean;
+             workspaceIds: never[];
+             archivedSessionIds: never[];
++            pendingSessionDeletionIds: never[];
+         };
+     };
+     tables: {
+@@ -82,4 +87,4 @@ export declare const workspaceDomainSpec: {
+         }>;
+     };
+ };
+-//# sourceMappingURL=spec.d.ts.map
+\ No newline at end of file
++//# sourceMappingURL=spec.d.ts.map
+diff --git a/lib/types/spec.js b/lib/types/spec.js
+index eaa39c268b..1449214524 100644
+--- a/lib/types/spec.js
++++ b/lib/types/spec.js
+@@ -37,12 +37,15 @@ const workspacePendingMutation = z.discriminatedUnion('operation', [
+  * the registry-global archive set layered over workspace accounting: an
+  * archived session keeps its `sessionIds` slot (unarchiving must restore the
+  * position), so the set never participates in the one-owner accounting
+- * invariant. Defaulted so records written before the field parse unchanged.
++ * invariant. `pendingSessionDeletionIds` records ownership-checked deletions whose
++ * remaining metadata cleanup may continue after the Session log disappears. Both
++ * arrays default so records written before either field parse unchanged.
+  */
+ export const workspaceDomainState = z.object({
+     initialized: z.boolean(),
+     workspaceIds: z.array(workspaceId),
+     archivedSessionIds: z.array(z.string().transform(value => brandString(value))).default([]),
++    pendingSessionDeletionIds: z.array(z.string().transform(value => brandString(value))).default([]),
+     pendingMutation: workspacePendingMutation.optional(),
+ });
+ /**
+@@ -56,8 +59,8 @@ export const workspaceDomainSpec = defineDomain({
+     version: 2,
+     global: {
+         schema: workspaceDomainState,
+-        initial: { initialized: false, workspaceIds: [], archivedSessionIds: [] },
++        initial: { initialized: false, workspaceIds: [], archivedSessionIds: [], pendingSessionDeletionIds: [] },
+     },
+     tables: { workspaces: domainTable(workspaceRecord) },
+ });
+-//# sourceMappingURL=spec.js.map
+\ No newline at end of file
++//# sourceMappingURL=spec.js.map

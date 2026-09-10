@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { Readable } from 'node:stream'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 interface DesktopOperationHandle {
   readonly stdout: NodeJS.ReadableStream
@@ -140,10 +140,13 @@ async function invokeUpdate(route: MarketRoute): Promise<{ status: number; body:
 }
 
 describe('dsh-market Desktop install compatibility', () => {
-  it('offers the host-provided market update when the Profile omits dshmarket', async () => {
-    for (const name of ['HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'http_proxy', 'https_proxy', 'all_proxy']) {
+  beforeEach(() => {
+    for (const name of ['HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'http_proxy', 'https_proxy', 'all_proxy', 'npm_config_proxy', 'npm_config_https_proxy']) {
       vi.stubEnv(name, '')
     }
+  })
+
+  it('offers the host-provided market update when the Profile omits dshmarket', async () => {
     globalThis.fetch = vi.fn(async () => new Response(
       JSON.stringify({ version: '1.39.0' }),
       { status: 200, headers: { 'content-type': 'application/json' } },
@@ -207,9 +210,6 @@ describe('dsh-market Desktop install compatibility', () => {
     '@liustack/modlens',
     '@liustack/modlens@latest',
   ])('resolves npm latest target %s and enters the external Market install boundary', async (target) => {
-    for (const name of ['HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy']) {
-      vi.stubEnv(name, '')
-    }
     globalThis.fetch = vi.fn(async () => new Response(
       JSON.stringify({ version: '3.18.1' }),
       { status: 200, headers: { 'content-type': 'application/json' } },

@@ -1,0 +1,79 @@
+diff --git a/lib/index.js b/lib/index.js
+index 48a1455df5..7e35ab518d 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -350,6 +350,10 @@ var JsonlBackendTracker = class {
+ 	materialized(id) {
+ 		this.pending.delete(id);
+ 	}
++	/** Refuse deletion while this process still has any handle for the Session. */
++	assertDeletable(id) {
++		if (this.writers.has(id) || [...this.openHandles].some((handle) => handle.id === id)) throw new Error(`cannot delete session "${id}" while a persistence handle is open`);
++	}
+ 	/**
+ 	* Track one open handle for teardown and, for a write handle, bind it as
+ 	* the session's live event route.
+@@ -2479,6 +2483,41 @@ var JsonlSessionPersistence = class extends SessionPersistence {
+ 		signal?.throwIfAborted();
+ 		return snapshots;
+ 	}
++	/**
++	* Permanently remove every committed generation for one closed Session while
++	* retaining its lock file and shared project directory.
++	* @param id - stored Session identity to remove.
++	* @returns true when at least one committed generation was removed.
++	*/
++	async delete(id) {
++		await this.ensureRootEncoding();
++		this.tracker.assertDeletable(id);
++		let selected = await this.findLog(id);
++		if (selected === void 0) return false;
++		const dir = dirname(selected.currentPath);
++		const lease = await this.acquireLease(id, void 0, dir);
++		try {
++			this.tracker.assertDeletable(id);
++			selected = await this.findLog(id);
++			if (selected === void 0) return false;
++			if (dirname(selected.currentPath) !== dir) throw new Error(`session "${id}" changed storage directory while deletion acquired ownership`);
++			const generations = (await readdir(dir, { withFileTypes: true })).filter((entry) => entry.isFile()).map((entry) => ({
++				name: entry.name,
++				version: parseGenerationLogFilename(entry.name, this.compression)
++			})).filter((entry) => entry.version !== void 0).sort((left, right) => left.version - right.version);
++			if (generations.length === 0) return false;
++			this.coldLogMemo.delete(id);
++			for (const generation of generations) await this.removeGeneration(join(dir, generation.name));
++			if (process.platform !== "win32") await this.syncDirPosix(dir);
++			return true;
++		} finally {
++			await lease.release();
++		}
++	}
++	/** Remove one committed generation selected by permanent deletion. */
++	async removeGeneration(path) {
++		await rm(path);
++	}
+ 	/** Resolve and read one stored log, refusing loudly when the artifact is absent. */
+ 	async requireStoredLog(id, signal) {
+ 		const selected = await this.findLog(id, signal);
+diff --git a/lib/types/index.d.ts b/lib/types/index.d.ts
+index 18633881c1..9d0c5baf32 100644
+--- a/lib/types/index.d.ts
++++ b/lib/types/index.d.ts
+@@ -118,6 +118,10 @@ declare class JsonlSessionPersistence extends SessionPersistence {
+      * @returns one snapshot per session, in no promised order.
+      */
+     list(options?: SessionPersistenceListOptions): Promise<readonly SessionPersistenceSnapshot[]>;
++    /** Permanently remove every committed generation for one closed Session. */
++    delete(id: SessionId): Promise<boolean>;
++    /** Remove one committed generation selected by permanent deletion. */
++    private removeGeneration;
+     /** Resolve and read one stored log, refusing loudly when the artifact is absent. */
+     private requireStoredLog;
+     /** Probe the memo and otherwise decode one historical generation under backend cancellation. */
+@@ -272,4 +276,4 @@ declare class JsonlSessionPersistence extends SessionPersistence {
+  * under the stable-read loop.
+  */
+ export default JsonlSessionPersistence;
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
++//# sourceMappingURL=index.d.ts.map

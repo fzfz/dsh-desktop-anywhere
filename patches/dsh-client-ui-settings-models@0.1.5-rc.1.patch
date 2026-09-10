@@ -1,0 +1,175 @@
+diff --git a/lib/client.js b/lib/client.js
+--- a/lib/client.js
++++ b/lib/client.js
+@@ -64,6 +64,14 @@ window.__ModuleLoader__.load({
+ 			tag.textContent = css$3;
+ 			document.head.appendChild(tag);
+ 		}
++		const modelReasoningTagId = "@deepseek-ai/dsh-client-ui-settings-models/ModelReasoningEffortsField";
++		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(modelReasoningTagId) + "]") === null) {
++			const tag = document.createElement("style");
++			tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-settings-models";
++			tag.dataset.pluginCss = modelReasoningTagId;
++			tag.textContent = ".dshModelReasoningField{grid-column:1/-1;flex-direction:column;gap:6px;display:flex}.dshModelReasoningHint{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.dshProviderEditorStickyFooter{z-index:4;position:sticky;bottom:-24px;background:var(--dsw-alias-bg-module-platform);border-top:1px solid var(--dsw-alias-border-l2);box-shadow:0 -10px 18px -18px #0009;justify-content:flex-end;margin:0 -16px -14px;padding:12px 16px 14px;display:flex}";
++			document.head.appendChild(tag);
++		}
+ 		var ModelsSection_module_css_default = {
+ 			"addActions": "iwpW_G_addActions",
+ 			"addBlock": "iwpW_G_addBlock",
+@@ -158,6 +166,67 @@ window.__ModuleLoader__.load({
+ 			});
+ 		}
+ 		//#endregion
++		//#region lib/types/client/ModelReasoningEffortsField.js
++		function configuredReasoningEfforts(model) {
++			const configured = model.reasoningEfforts;
++			return configured !== null && typeof configured === "object" && !Array.isArray(configured) ? configured : {};
++		}
++		function parseEffortList(text) {
++			return text.split(",").map((value) => value.trim()).filter((value) => value.length > 0);
++		}
++		function reasoningEffortIds(model) {
++			const configuredIds = Object.keys(configuredReasoningEfforts(model));
++			if (configuredIds.length > 0) return configuredIds;
++			const legacy = model.reasoning?.efforts;
++			if (!Array.isArray(legacy)) return [];
++			return legacy.filter((level) => level !== null && typeof level === "object" && typeof level.id === "string" && level.id.trim().length > 0).map((level) => level.id);
++		}
++		function nextReasoningEfforts(model, ids) {
++			if (ids.length === 0) return void 0;
++			const configured = configuredReasoningEfforts(model);
++			return Object.fromEntries(ids.map((id) => [id, Object.prototype.hasOwnProperty.call(configured, id) ? configured[id] : id]));
++		}
++		function ModelReasoningEffortsField(props) {
++			const canonical = reasoningEffortIds(props.model).join(", ");
++			const [draft, setDraft] = (0, react.useState)(null);
++			const original = (0, react.useRef)({
++				modelId: props.model.id,
++				reasoningEfforts: configuredReasoningEfforts(props.model)
++			});
++			if (original.current.modelId !== props.model.id) original.current = {
++				modelId: props.model.id,
++				reasoningEfforts: configuredReasoningEfforts(props.model)
++			};
++			const value = draft !== null ? draft : canonical;
++			return (0, react_jsx_runtime.jsx)("div", {
++				className: "dshModelReasoningField",
++				children: (0, react_jsx_runtime.jsxs)("label", {
++					className: ModelsSection_module_css_default["modelField"],
++					children: [(0, react_jsx_runtime.jsx)("span", {
++						className: ModelsSection_module_css_default["modelFieldLabel"],
++						children: props.t("modelReasoningLevels")
++					}), (0, react_jsx_runtime.jsx)("input", {
++						className: ModelsSection_module_css_default["input"],
++						type: "text",
++						value,
++						placeholder: props.t("modelReasoningLevelsPlaceholder"),
++						"aria-label": `${props.t("modelReasoningLevels")} ${String(props.index + 1)}`,
++						disabled: props.disabled,
++						onChange: (event) => {
++							setDraft(event.target.value);
++							props.onChange(nextReasoningEfforts({ reasoningEfforts: original.current.reasoningEfforts }, parseEffortList(event.target.value)));
++						},
++						onBlur: () => {
++							setDraft(null);
++						}
++					}), (0, react_jsx_runtime.jsx)("span", {
++						className: "dshModelReasoningHint",
++						children: props.t("modelReasoningLevelsHint")
++					})]
++				})
++			});
++		}
++		//#endregion
+ 		//#region lib/types/client/DeepSeekModelsEditor.js
+ 		/**
+ 		* Curated editor for the direct DeepSeek adapter's advisory model catalog.
+@@ -788,6 +857,14 @@ window.__ModuleLoader__.load({
+ 										editCapacity(index, "maxTokens", event.target.value);
+ 									}
+ 								})]
++							}), (0, react_jsx_runtime.jsx)(ModelReasoningEffortsField, {
++								model,
++								index,
++								t,
++								disabled,
++								onChange: (next) => {
++									patch(index, { reasoningEfforts: next, reasoning: void 0 });
++								}
+ 							})]
+ 						}) : null]
+ 					}, index)),
+@@ -1721,19 +1798,22 @@ window.__ModuleLoader__.load({
+ 						className: ModelsSection_module_css_default["advancedHint"],
+ 						children: `${t("model")} ${String(modelFailure.index + 1)}: ${t(modelFailure.key)}`
+ 					}),
+-					(0, react_jsx_runtime.jsx)(EditorFooter, {
+-						t,
+-						busy,
+-						submitDisabled: disabled || layout === "unknown" || props.credentialOnly !== true && modelFailure !== void 0 || shownKeyFailure !== void 0 || props.credentialRequired === true && keyValue.length === 0,
+-						submitLabelKey: props.submitLabelKey ?? "apply",
+-						submitBusyLabelKey: props.submitBusyLabelKey ?? "applying",
+-						...props.cancelLabelKey === void 0 ? {} : { cancelLabelKey: props.cancelLabelKey },
+-						onCancel: () => {
+-							props.onClose(false);
+-						},
+-						onSubmit: () => {
+-							apply();
+-						}
++					(0, react_jsx_runtime.jsx)("div", {
++						className: "dshProviderEditorStickyFooter",
++						children: (0, react_jsx_runtime.jsx)(EditorFooter, {
++							t,
++							busy,
++							submitDisabled: disabled || layout === "unknown" || props.credentialOnly !== true && modelFailure !== void 0 || shownKeyFailure !== void 0 || props.credentialRequired === true && keyValue.length === 0,
++							submitLabelKey: props.submitLabelKey ?? "apply",
++							submitBusyLabelKey: props.submitBusyLabelKey ?? "applying",
++							...props.cancelLabelKey === void 0 ? {} : { cancelLabelKey: props.cancelLabelKey },
++							onCancel: () => {
++								props.onClose(false);
++							},
++							onSubmit: () => {
++								apply();
++							}
++						})
+ 					})
+ 				]
+ 			});
+@@ -2664,7 +2744,7 @@ window.__ModuleLoader__.load({
+ 			contextWindowPlaceholder: "Uses the provider default",
+ 			maxTokens: "Max output tokens",
+ 			maxTokensPlaceholder: "Uses the provider default",
+-			modelAdvanced: "Capacities",
++			modelAdvanced: "Model settings",
+ 			addModel: "Add model",
+ 			removeModel: "Delete model",
+ 			modelsEmpty: "No models will be shown in the selector. Unlisted IDs can still be sent directly.",
+@@ -2681,6 +2758,9 @@ window.__ModuleLoader__.load({
+ 			modelDuplicate: "Each model ID may appear once.",
+ 			modelContextWindow: "Context window",
+ 			modelMaxTokens: "Max output tokens",
++			modelReasoningLevels: "Reasoning effort levels",
++			modelReasoningLevelsPlaceholder: "e.g. low, medium, high",
++			modelReasoningLevelsHint: "Enter reasoning effort IDs separated by commas. Saved IDs become selectable for this model in chat. Leave the input empty to remove this model's reasoning effort settings.",
+ 			fetchModels: "Fetch available models",
+ 			fetching: "Asking the provider…",
+ 			fetchNeedsBaseUrl: "Enter the base URL first, then fetch.",
+@@ -2766,7 +2849,7 @@ window.__ModuleLoader__.load({
+ 			contextWindowPlaceholder: "使用提供方默认值",
+ 			maxTokens: "最大输出 token 数",
+ 			maxTokensPlaceholder: "使用提供方默认值",
+-			modelAdvanced: "容量",
++			modelAdvanced: "模型设置",
+ 			addModel: "添加模型",
+ 			removeModel: "删除模型",
+ 			modelsEmpty: "模型选择器中将不显示任何模型；目录外 ID 仍可直接发送。",
+@@ -2783,6 +2863,9 @@ window.__ModuleLoader__.load({
+ 			modelDuplicate: "每个模型 ID 只能出现一次。",
+ 			modelContextWindow: "上下文窗口",
+ 			modelMaxTokens: "最大输出 token",
++			modelReasoningLevels: "推理等级",
++			modelReasoningLevelsPlaceholder: "例如：low, medium, high",
++			modelReasoningLevelsHint: "请输入以英文逗号分隔的推理等级 ID。保存后，会话可为此模型选择这些等级。留空会删除此模型的推理等级设置。",
+ 			fetchModels: "获取可用模型",
+ 			fetching: "正在询问提供方…",
+ 			fetchNeedsBaseUrl: "请先填写 API 地址，再获取。",
