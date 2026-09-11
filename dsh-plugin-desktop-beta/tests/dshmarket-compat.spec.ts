@@ -42,13 +42,6 @@ type MarketRoute = (request: object, response: object) => void | Promise<void>
 const originalFetch = globalThis.fetch
 const temporaryProfiles: string[] = []
 
-beforeEach(() => {
-  for (const key of [
-    "http_proxy", "HTTP_PROXY", "https_proxy", "HTTPS_PROXY",
-    "npm_config_proxy", "npm_config_https_proxy",
-  ]) vi.stubEnv(key, undefined)
-})
-
 afterEach(() => {
   globalThis.fetch = originalFetch
   for (const profile of temporaryProfiles.splice(0)) rmSync(profile, { recursive: true, force: true })
@@ -147,10 +140,13 @@ async function invokeUpdate(route: MarketRoute): Promise<{ status: number; body:
 }
 
 describe('dsh-market Desktop install compatibility', () => {
-  it('offers the host-provided market update when the Profile omits dshmarket', async () => {
-    for (const name of ['HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'http_proxy', 'https_proxy', 'all_proxy']) {
+  beforeEach(() => {
+    for (const name of ['HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'http_proxy', 'https_proxy', 'all_proxy', 'npm_config_proxy', 'npm_config_https_proxy']) {
       vi.stubEnv(name, '')
     }
+  })
+
+  it('offers the host-provided market update when the Profile omits dshmarket', async () => {
     globalThis.fetch = vi.fn(async () => new Response(
       JSON.stringify({ version: '1.39.0' }),
       { status: 200, headers: { 'content-type': 'application/json' } },
@@ -214,9 +210,6 @@ describe('dsh-market Desktop install compatibility', () => {
     '@liustack/modlens',
     '@liustack/modlens@latest',
   ])('resolves npm latest target %s and enters the external Market install boundary', async (target) => {
-    for (const name of ['HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy']) {
-      vi.stubEnv(name, '')
-    }
     globalThis.fetch = vi.fn(async () => new Response(
       JSON.stringify({ version: '3.18.1' }),
       { status: 200, headers: { 'content-type': 'application/json' } },

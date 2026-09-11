@@ -41,6 +41,7 @@ function fixture(headers: Record<string, string> = {}) {
       piProvider: opencodeGoProvider(),
       streamIdleTimeoutMs: 5000,
       configuredMaxTokens: new Map(),
+      modelErrors: new Map(),
       maxRequestImageBytes: 1024,
       requestImagePixelBudget: 1024,
       requestImageMaxBytes: 1024,

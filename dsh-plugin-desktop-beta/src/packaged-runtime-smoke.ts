@@ -11,11 +11,10 @@ import {
 } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { rgPath } from '@vscode/ripgrep'
 import AdmZip from 'adm-zip'
-import { materializeLegacyPresetAliases } from './agent-preset-compat.ts'
 import { exportDiagnosticsZip } from './diagnostic-export.ts'
 import { installProfilePackageResolver } from './module-resolution.ts'
 
@@ -48,27 +47,35 @@ if (process.platform === 'win32') {
   assert(typeof fsExt.flockSync === 'function', 'did not load the Electron ABI fs-ext binding')
 }
 
-/** Exercise the code-to-ptc compatibility copy through Electron's ASAR filesystem. */
-function smokeLegacyPresetAliases(): void {
-  const compatRoot = mkdtempSync(join(tmpdir(), 'dsh-packaged-preset-compat-'))
-  const installRequire = createRequire(installAnchor)
-  const shippedRoot = join(
-    dirname(installRequire.resolve('@deepseek-ai/dsh-agent-presets/package.json')),
-    'presets',
-  )
+/** Exercise upstream migration and native session locks from the packaged ASAR. */
+async function smokeSessionMigration(): Promise<void> {
+  const { Context } = await import('@deepseek-ai/cordis')
+  const { SessionId } = await import('@deepseek-ai/dsh-session')
+  const { default: JsonlSessionPersistence } = await import('@deepseek-ai/dsh-session-persistence-jsonl')
+  const root = mkdtempSync(join(tmpdir(), 'dsh-packaged-session-migration-'))
+  const id = SessionId('packaged-migration')
+  const directory = join(root, '_no-cwd', id)
+  const source = JSON.stringify({
+    type: 'session', version: 2, id, createdAt: 1, isSeeded: false,
+    delegationDepth: 0, agentPreset: 'code',
+  }) + '\n'
+  const ctx = new Context()
   try {
-    assert(
-      materializeLegacyPresetAliases({ shippedRoot, compatRoot }) === compatRoot,
-      'did not materialize the legacy code preset alias',
-    )
-    const legacyComposition = readFileSync(join(compatRoot, 'code', 'agent.cordis.yml'), 'utf8')
-    const shippedComposition = readFileSync(join(shippedRoot, 'ptc', 'agent.cordis.yml'), 'utf8')
-    assert(
-      legacyComposition === shippedComposition,
-      'materialized code preset does not match the shipped ptc composition',
-    )
+    mkdirSync(directory, { recursive: true })
+    writeFileSync(join(directory, 'session.v2.jsonl'), source)
+    await ctx.plugin(JsonlSessionPersistence, { root, compression: 'none' })
+    const handle = await ctx.sessionPersistence.open(id, 'write')
+    try {
+      assert(handle.header.version === 3 && handle.header.agentPreset === 'ptc', 'did not migrate the legacy preset through the upstream worker')
+    } finally {
+      await handle.close()
+    }
+    await ctx.sessionPersistence.flush()
+    assert(existsSync(join(directory, 'session.v3.jsonl')), 'did not publish the V3 session log')
+    assert(readFileSync(join(directory, 'session.v2.jsonl'), 'utf8') === source, 'changed the original V2 session log')
   } finally {
-    rmSync(compatRoot, { recursive: true, force: true })
+    await ctx.fiber.dispose()
+    rmSync(root, { recursive: true, force: true })
   }
 }
 
@@ -211,7 +218,7 @@ try {
   rmSync(root, { recursive: true, force: true })
 }
 
-smokeLegacyPresetAliases()
+await smokeSessionMigration()
 await smokeDiagnosticExportWorker()
 
 process.stdout.write(OK_MARKER)

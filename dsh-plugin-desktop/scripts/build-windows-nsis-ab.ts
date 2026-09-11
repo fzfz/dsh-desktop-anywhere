@@ -259,7 +259,7 @@ export function buildWindowsNsisAb(options: WindowsNsisAbBuildOptions): WindowsN
       '--unsafe-paths',
       // Anchor package-relative patch paths at the isolated -C directory.
       '--directory=.',
-      '--include=templates/nsis/include/extractAppPackage.nsh',
+      '--include=./templates/nsis/include/extractAppPackage.nsh',
       options.appBuilderPatch,
     ],
     options.workspaceRoot,

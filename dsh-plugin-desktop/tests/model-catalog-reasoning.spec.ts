@@ -95,7 +95,7 @@ async function loadReasoningHelpers(): Promise<ReasoningHelpers> {
 }
 
 describe('OpenCode Go Stable model catalog', () => {
-  it('ships the four requested 0.84.4 models with their runtime capabilities', () => {
+  it('ships the four requested 0.85.1 models with their runtime capabilities', () => {
     const catalog = new Map(getBuiltinModels('opencode-go').map(model => [model.id, model]))
 
     expect(catalog.get('qwen3.8-flash')).toMatchObject({
@@ -131,13 +131,13 @@ describe('OpenCode Go Stable model catalog', () => {
     })
   })
 
-  it('uses pi-ai 0.84.4 rather than a hand-maintained catalog patch', async () => {
+  it('uses pi-ai 0.85.1 rather than a hand-maintained catalog patch', async () => {
     const manifest = JSON.parse(await readFile(
       new URL('../node_modules/@earendil-works/pi-ai/package.json', import.meta.url),
       'utf8'
     )) as { version: string }
 
-    expect(manifest.version).toBe('0.84.4')
+    expect(manifest.version).toBe('0.85.1')
   })
 })
 
@@ -264,7 +264,7 @@ describe('custom provider model reasoning settings', () => {
   it('wires the editor to the canonical field without dropping the model row', async () => {
     const client = await readFile(clientUrl, 'utf8')
     const patch = await readFile(
-      new URL('../../patches/dsh-client-ui-settings-models@0.1.2-rc.1.patch', import.meta.url),
+      new URL('../../patches/dsh-client-ui-settings-models@0.1.5-rc.1.patch', import.meta.url),
       'utf8'
     )
 

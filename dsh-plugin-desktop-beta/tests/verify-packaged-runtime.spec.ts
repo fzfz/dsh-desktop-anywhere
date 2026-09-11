@@ -211,7 +211,7 @@ describe('packaged desktop runtime verification', () => {
     expect(DESKTOP_RUNTIME_ENTRIES).toContain('lib/native-ui/setup-wizard.html')
   })
 
-  it('keeps the PTC compatibility source present and integrity-protected in app.asar', () => {
+  it('keeps the shipped PTC preset present and integrity-protected in app.asar', () => {
     expect(REQUIRED_AGENT_PRESET_RUNTIME_ENTRIES).toEqual([
       'node_modules/@deepseek-ai/dsh-agent-presets/presets/ptc/agent.cordis.yml',
       'node_modules/@deepseek-ai/dsh-agent-presets/presets/ptc/preset.yml',
