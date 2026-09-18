@@ -264,7 +264,7 @@ describe('custom provider model reasoning settings', () => {
   it('wires the editor to the canonical field without dropping the model row', async () => {
     const client = await readFile(clientUrl, 'utf8')
     const patch = await readFile(
-      new URL('../../patches/dsh-client-ui-settings-models@0.1.5-rc.1.patch', import.meta.url),
+      new URL('../../patches/dsh-client-ui-settings-models@0.1.5-rc.2.patch', import.meta.url),
       'utf8'
     )
 

@@ -313,7 +313,7 @@ const patchedPackages = [
 describe('permanent session deletion dependency patches', () => {
   it.each(patchedPackages)('$name patch is reproducible and installed', async ({ name, file, markers }) => {
     const [patch, installed] = await Promise.all([
-      readFile(path.join(repositoryRoot, 'patches', `${name}@0.1.5-rc.1.patch`), 'utf8'),
+      readFile(path.join(repositoryRoot, 'patches', `${name}@0.1.5-rc.2.patch`), 'utf8'),
       readFile(path.join(workspaceRoot, 'node_modules', '@deepseek-ai', name, file), 'utf8'),
     ])
 

@@ -5,7 +5,7 @@ import { join, resolve } from 'node:path'
 
 export type MacUniversalArch = 'arm64' | 'x86_64'
 
-/** Thin native files that must be present for each CPU inside app.asar.unpacked. */
+/** Thin native files that must be present for each CPU inside the packaged app directory. */
 export const MACOS_UNIVERSAL_NATIVE_ENTRIES = [
   {
     arch: 'arm64',
