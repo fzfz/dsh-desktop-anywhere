@@ -81,6 +81,7 @@ async function createDeletionCommandFixture(
     initialized: true,
     workspaceIds: [workspaceId],
     archivedSessionIds: [targetId, keptId],
+    pinnedSessionIds: [targetId, keptId],
     pendingSessionDeletionIds: [] as Array<typeof targetId>,
   }
   const workspaceTable = {
@@ -250,6 +251,7 @@ async function createDeletionCommandFixture(
     get workspaceRegistry() { return activeWorkspaceRegistry },
     get workspaceSessionIds() { return [...(activeWorkspaceRegistry.list()[0]?.sessionIds ?? [])] },
     get archivedSessionIds() { return [...activeWorkspaceRegistry.archivedSessionIds] },
+    get pinnedSessionIds() { return [...activeWorkspaceRegistry.pinnedSessionIds] },
     get pendingSessionDeletionIds() { return [...workspaceState.pendingSessionDeletionIds] },
     removalEvents,
     get admittedMessages() { return admittedMessages },
@@ -306,14 +308,14 @@ const patchedPackages = [
   {
     name: 'dsh-client-ui-workspace',
     file: 'lib/client.js',
-    markers: ['delete.session', 'danger: true', 'Workspace files are kept', 'await sessions.delete(sessionId)'],
+    markers: ['SessionDeleteMenuItem', 'SessionDeleteDialog', 'Workspace files are kept', 'sessions.delete(sessionId)'],
   },
 ] as const
 
 describe('permanent session deletion dependency patches', () => {
   it.each(patchedPackages)('$name patch is reproducible and installed', async ({ name, file, markers }) => {
     const [patch, installed] = await Promise.all([
-      readFile(path.join(repositoryRoot, 'patches', `${name}@0.1.5-rc.2.patch`), 'utf8'),
+      readFile(path.join(repositoryRoot, 'patches', `${name}@0.1.7-rc.2.patch`), 'utf8'),
       readFile(path.join(workspaceRoot, 'node_modules', '@deepseek-ai', name, file), 'utf8'),
     ])
 
@@ -490,6 +492,7 @@ describe('permanent session deletion dependency patches', () => {
     expect([...fixture.stored.keys()]).toEqual([fixture.targetId, fixture.keptId])
     expect(fixture.workspaceSessionIds).toEqual([fixture.targetId, fixture.keptId])
     expect(fixture.archivedSessionIds).toEqual([fixture.targetId, fixture.keptId])
+    expect(fixture.pinnedSessionIds).toEqual([fixture.targetId, fixture.keptId])
     expect([...fixture.pendingSessionDeletionIds]).toEqual([fixture.targetId])
     expect(fixture.removalEvents).toEqual([])
   })
@@ -509,6 +512,7 @@ describe('permanent session deletion dependency patches', () => {
       expect([...fixture.stored.keys()]).toEqual([fixture.keptId])
       expect(fixture.workspaceSessionIds).toEqual([fixture.keptId])
       expect(fixture.archivedSessionIds).toEqual([fixture.keptId])
+      expect(fixture.pinnedSessionIds).toEqual([fixture.keptId])
       expect(fixture.client).toEqual({ ids: [fixture.keptId], selected: undefined })
       expect(fixture.removalEvents).toEqual([fixture.targetId])
       expect([...fixture.pendingSessionDeletionIds]).toEqual([])

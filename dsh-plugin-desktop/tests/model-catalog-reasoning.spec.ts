@@ -264,14 +264,15 @@ describe('custom provider model reasoning settings', () => {
   it('wires the editor to the canonical field without dropping the model row', async () => {
     const client = await readFile(clientUrl, 'utf8')
     const patch = await readFile(
-      new URL('../../patches/dsh-client-ui-settings-models@0.1.5-rc.2.patch', import.meta.url),
+      new URL('../../patches/dsh-client-ui-settings-models@0.1.7-rc.2.patch', import.meta.url),
       'utf8'
     )
 
-    expect(client).toContain('patch(index, { reasoningEfforts: next, reasoning: void 0 });')
+    expect(client).toContain('props.onChange(updated);')
+    expect(client).toContain('reasoningEnabled: true')
     expect(client).toContain('reasoningEfforts: original.current.reasoningEfforts')
     expect(client).toContain('modelReasoningLevels: "Reasoning effort levels"')
-    expect(client).toContain('modelAdvanced: "模型设置"')
+    expect(client).toContain('modelReasoningLevels: "推理等级"')
     expect(client).toContain('Saved IDs become selectable for this model in chat.')
     expect(client).toContain('保存后，会话可为此模型选择这些等级。')
     expect(client).toContain('className: "dshProviderEditorStickyFooter"')

@@ -29,7 +29,6 @@ const input: DesktopSetupWizardInput = {
   appVersion: '2.0.6-beta.1',
   profileName: 'work',
   platform: 'darwin',
-  micaSupported: false,
   mode: 'extended',
   macosMaterial: 'transparent',
   windowsMaterial: 'off',

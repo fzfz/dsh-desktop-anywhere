@@ -55,10 +55,9 @@ function input(overrides: Partial<DesktopSetupWizardInput> = {}): DesktopSetupWi
     appVersion: '2.0.6-beta.1',
     profileName: 'work',
     platform: 'win32',
-    micaSupported: true,
     mode: 'compatibility',
     macosMaterial: 'transparent',
-    windowsMaterial: 'mica',
+    windowsMaterial: 'off',
     openBrowser: true,
     networkExposure: 'loopback',
     aaEnabled: false,
@@ -99,7 +98,7 @@ describe('Desktop Setup Wizard action parser', () => {
       selection: {
         mode: 'compatibility',
         macosMaterial: 'transparent',
-        windowsMaterial: 'mica',
+        windowsMaterial: 'off',
         openBrowser: true,
         networkExposure: 'loopback',
         aaEnabled: false,
@@ -125,6 +124,10 @@ describe('Desktop Setup Wizard action parser', () => {
     const malformed = new URL(completeUrl())
     malformed.searchParams.set('openBrowser', '1')
     expect(parseDesktopSetupWizardAction(malformed.href)).toBeUndefined()
+    // Windows no longer offers Mica, so a stale page cannot select it.
+    const removedMaterial = new URL(completeUrl())
+    removedMaterial.searchParams.set('windowsMaterial', 'mica')
+    expect(parseDesktopSetupWizardAction(removedMaterial.href)).toBeUndefined()
     expect(parseDesktopSetupWizardAction(`${completeUrl()}${'x'.repeat(8192)}`)).toBeUndefined()
   })
 })
@@ -222,7 +225,7 @@ describe('DesktopSetupWizardWindow', () => {
   })
 
   it('ignores selections unavailable for the supplied platform capabilities', async () => {
-    const linuxInput = input({ platform: 'linux', micaSupported: false, mode: 'compatibility' })
+    const linuxInput = input({ platform: 'linux', mode: 'compatibility' })
     const result = new DesktopSetupWizardWindow({ locale: 'en', input: linuxInput }).run()
     await vi.waitFor(() => { expect(electron.windows).toHaveLength(1) })
     navigate(electron.windows[0]!, completeUrl({ ...linuxInput, mode: 'advanced' }))

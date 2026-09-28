@@ -1,7 +1,10 @@
 /** Fail-loud verification of the runtime entries sealed into Electron's app.asar. */
 
 import { spawnSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import {
+  accessSync,
+  constants,
   existsSync,
   lstatSync,
   mkdtempSync,
@@ -13,7 +16,7 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, parse } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { getRawHeader } from '@electron/asar'
+import { extractFile, getRawHeader } from '@electron/asar'
 import {
   FORBIDDEN_MACOS_UNIVERSAL_ENTRIES,
   MACOS_UNIVERSAL_NATIVE_ENTRIES,
@@ -88,6 +91,7 @@ export const ALLOWED_SMART_UNPACK_PACKAGE_ROOTS = [
 
 /** Platform package families selected by native dependencies at package time. */
 export const ALLOWED_SMART_UNPACK_PACKAGE_PREFIXES = [
+  'node_modules/@dataiku/uv-',
   'node_modules/@deepseek-ai/node-addon-system-',
   'node_modules/@img/sharp-',
   'node_modules/@koromix/koffi-',
@@ -105,8 +109,7 @@ export const REQUIRED_DSH_CLI_RUNTIME_ENTRIES = Object.freeze(
 
 /** PTC preset inputs selected by upstream's historical Session migration. */
 export const REQUIRED_AGENT_PRESET_RUNTIME_ENTRIES = [
-  'node_modules/@deepseek-ai/dsh-agent-presets/presets/ptc/agent.cordis.yml',
-  'node_modules/@deepseek-ai/dsh-agent-presets/presets/ptc/preset.yml',
+  'node_modules/@deepseek-ai/dsh-web-app/presets/ptc.patch.yml',
 ] as const
 
 /** AfterPack fields consumed without importing Electron Builder's incomplete declaration graph. */
@@ -195,12 +198,12 @@ export const REQUIRED_WINDOWS_X64_NODE_PTY_ENTRIES = [
 /** ABI-pinned fs-ext bindings selected by non-universal macOS and Linux packages. */
 export const REQUIRED_POSIX_FS_EXT_ENTRIES = {
   darwin: {
-    x64: 'node_modules/fs-ext/prebuilds/darwin-x64/electron.abi148.node',
-    arm64: 'node_modules/fs-ext/prebuilds/darwin-arm64/electron.abi148.node',
+    x64: 'node_modules/fs-ext/prebuilds/darwin-x64/electron.abi149.node',
+    arm64: 'node_modules/fs-ext/prebuilds/darwin-arm64/electron.abi149.node',
   },
   linux: {
-    x64: 'node_modules/fs-ext/prebuilds/linux-x64/electron.abi148.node',
-    arm64: 'node_modules/fs-ext/prebuilds/linux-arm64/electron.abi148.node',
+    x64: 'node_modules/fs-ext/prebuilds/linux-x64/electron.abi149.node',
+    arm64: 'node_modules/fs-ext/prebuilds/linux-arm64/electron.abi149.node',
   },
 } as const
 
@@ -849,6 +852,34 @@ export function reportUnpackedRuntime(summary: UnpackedRuntimeSummary): void {
   process.stdout.write(`dsh-plugin-desktop: packaged runtime inventory: ${formatUnpackedRuntimeSummary(summary)}\n`)
 }
 
+/** Verify the AA version and built entry sealed into the actual installation payload. */
+export function verifyPackagedAgentsAnywhere(
+  context: PackagedRuntimeContext,
+  readInstalled: (path: string) => Buffer = readFileSync,
+  readPackaged: (path: string) => Buffer = path => usesAsarLayout(context)
+    ? extractFile(resolvePackagedAsarPath(context), path)
+    : readFileSync(join(resolvePackagedApplicationRoot(context), path)),
+): void {
+  if (context.electronPlatformName === 'darwin') {
+    const root = usesAsarLayout(context) ? resolvePackagedUnpackedRoot(context) : resolvePackagedApplicationRoot(context)
+    for (const entry of MACOS_UNIVERSAL_NATIVE_ENTRIES.filter(entry => entry.path.endsWith('/bin/uv'))) {
+      accessSync(join(root, entry.path), constants.X_OK)
+    }
+  }
+  const packagePath = 'node_modules/@agents-anywhere/dsh-bridge-next'
+  const desktopRoot = context.packager.projectDir ?? DESKTOP_PACKAGE_ROOT
+  const expected = JSON.parse(readInstalled(join(desktopRoot, packagePath, 'package.json')).toString()) as { version: string }
+  const actual = JSON.parse(readPackaged(`${packagePath}/package.json`).toString()) as { version: string }
+  if (expected.version !== actual.version) {
+    throw new Error(`Packaged AA version mismatch: expected ${expected.version}, received ${actual.version}`)
+  }
+  const digest = (bytes: Buffer): string => createHash('sha256').update(bytes).digest('hex')
+  if (digest(readInstalled(join(desktopRoot, packagePath, 'lib/index.js')))
+    !== digest(readPackaged(`${packagePath}/lib/index.js`))) {
+    throw new Error('Packaged AA entry differs from the prepared release dependency')
+  }
+}
+
 /**
  * Run the static packaged-runtime check as Electron Builder's afterPack hook.
  * @param context - Electron Builder's afterPack context.
@@ -858,8 +889,10 @@ export async function afterPack(
   context: PackagedRuntimeContext,
   verify: typeof verifyPackagedRuntime = verifyPackagedRuntime,
   report: (summary: UnpackedRuntimeSummary) => void = reportUnpackedRuntime,
+  verifyAa: typeof verifyPackagedAgentsAnywhere = verifyPackagedAgentsAnywhere,
 ): Promise<void> {
   const summary = verify(context)
+  verifyAa(context)
   report(summary)
 }
 

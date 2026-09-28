@@ -1,0 +1,195 @@
+diff --git a/lib/index.js b/lib/index.js
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -243,6 +243,7 @@
+ 	defaultWorkspaceId: workspaceId.optional(),
+ 	workspaceIds: z.array(workspaceId),
+ 	archivedSessionIds: z.array(sessionId).default([]),
++	pendingSessionDeletionIds: z.array(sessionId).default([]),
+ 	pinnedSessionIds: z.array(sessionId).default([]),
+ 	pendingMutation: workspacePendingMutation.optional()
+ });
+@@ -261,6 +262,7 @@
+ 			initialized: false,
+ 			workspaceIds: [],
+ 			archivedSessionIds: [],
++			pendingSessionDeletionIds: [],
+ 			pinnedSessionIds: []
+ 		}
+ 	},
+@@ -563,6 +565,39 @@
+ 	* session on grouping surfaces. Pinning never touches workspace accounting.
+ 	* @returns Session ids in pin order (most recently pinned first).
+ 	*/
++	/** Record authorization before a Session log is permanently removed. */
++	beginSessionDeletion(sessionId) {
++		return this.enqueueOperation(async () => {
++			const state = this.requireState();
++			if (state.pendingSessionDeletionIds.includes(sessionId)) return;
++			await this.setState({ ...state, pendingSessionDeletionIds: [...state.pendingSessionDeletionIds, sessionId] });
++		});
++	}
++	isSessionDeletionPending(sessionId) {
++		return this.requireState().pendingSessionDeletionIds.includes(sessionId);
++	}
++	/** Remove a deleted Session from Workspace membership and registry metadata. */
++	forgetSession(sessionId) {
++		return this.enqueueOperation(async () => {
++			for (const [workspaceId, record] of this.requireTable().entries()) {
++				if (!record.sessionIds.includes(sessionId)) continue;
++				const entity = this.entities.get(workspaceId);
++				if (entity === void 0) throw new Error(`cannot forget session '${sessionId}': workspace '${workspaceId}' is not published`);
++				await entity.detachSession(sessionId);
++				break;
++			}
++			const state = this.requireState();
++			const archivedSessionIds = state.archivedSessionIds.filter((id) => id !== sessionId);
++			const pinnedSessionIds = state.pinnedSessionIds.filter((id) => id !== sessionId);
++			const pendingSessionDeletionIds = state.pendingSessionDeletionIds.filter((id) => id !== sessionId);
++			if (archivedSessionIds.length !== state.archivedSessionIds.length || pinnedSessionIds.length !== state.pinnedSessionIds.length || pendingSessionDeletionIds.length !== state.pendingSessionDeletionIds.length) await this.setState({
++				...state, archivedSessionIds, pinnedSessionIds, pendingSessionDeletionIds
++			});
++			this.headers.delete(sessionId);
++			this.sessionPaths.delete(sessionId);
++			this.invalidSessionPaths.delete(sessionId);
++		});
++	}
+ 	get pinnedSessionIds() {
+ 		return this.requireState().pinnedSessionIds;
+ 	}
+@@ -819,12 +854,14 @@
+ 			initialized: false,
+ 			workspaceIds,
+ 			archivedSessionIds: state.archivedSessionIds,
++			pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+ 			pinnedSessionIds: state.pinnedSessionIds
+ 		});
+ 		await this.setState({
+ 			initialized: true,
+ 			workspaceIds,
+ 			archivedSessionIds: state.archivedSessionIds,
++			pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+ 			pinnedSessionIds: state.pinnedSessionIds
+ 		});
+ 	}
+diff --git a/lib/types/index.js b/lib/types/index.js
+--- a/lib/types/index.js
++++ b/lib/types/index.js
+@@ -329,6 +329,39 @@
+      * session on grouping surfaces. Pinning never touches workspace accounting.
+      * @returns Session ids in pin order (most recently pinned first).
+      */
++    /** Record authorization before a Session log is permanently removed. */
++    beginSessionDeletion(sessionId) {
++        return this.enqueueOperation(async () => {
++            const state = this.requireState();
++            if (state.pendingSessionDeletionIds.includes(sessionId)) return;
++            await this.setState({ ...state, pendingSessionDeletionIds: [...state.pendingSessionDeletionIds, sessionId] });
++        });
++    }
++    isSessionDeletionPending(sessionId) {
++        return this.requireState().pendingSessionDeletionIds.includes(sessionId);
++    }
++    /** Remove a deleted Session from Workspace membership and registry metadata. */
++    forgetSession(sessionId) {
++        return this.enqueueOperation(async () => {
++            for (const [workspaceId, record] of this.requireTable().entries()) {
++                if (!record.sessionIds.includes(sessionId)) continue;
++                const entity = this.entities.get(workspaceId);
++                if (entity === undefined) throw new Error(`cannot forget session '${sessionId}': workspace '${workspaceId}' is not published`);
++                await entity.detachSession(sessionId);
++                break;
++            }
++            const state = this.requireState();
++            const archivedSessionIds = state.archivedSessionIds.filter(id => id !== sessionId);
++            const pinnedSessionIds = state.pinnedSessionIds.filter(id => id !== sessionId);
++            const pendingSessionDeletionIds = state.pendingSessionDeletionIds.filter(id => id !== sessionId);
++            if (archivedSessionIds.length !== state.archivedSessionIds.length || pinnedSessionIds.length !== state.pinnedSessionIds.length || pendingSessionDeletionIds.length !== state.pendingSessionDeletionIds.length) await this.setState({
++                ...state, archivedSessionIds, pinnedSessionIds, pendingSessionDeletionIds,
++            });
++            this.headers.delete(sessionId);
++            this.sessionPaths.delete(sessionId);
++            this.invalidSessionPaths.delete(sessionId);
++        });
++    }
+     get pinnedSessionIds() {
+         return this.requireState().pinnedSessionIds;
+     }
+@@ -638,6 +671,7 @@
+                 initialized: false,
+                 workspaceIds,
+                 archivedSessionIds: state.archivedSessionIds,
++                pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+                 pinnedSessionIds: state.pinnedSessionIds,
+             });
+         }
+@@ -645,6 +679,7 @@
+             initialized: true,
+             workspaceIds,
+             archivedSessionIds: state.archivedSessionIds,
++            pendingSessionDeletionIds: state.pendingSessionDeletionIds,
+             pinnedSessionIds: state.pinnedSessionIds,
+         });
+     }
+diff --git a/lib/types/index.d.ts b/lib/types/index.d.ts
+--- a/lib/types/index.d.ts
++++ b/lib/types/index.d.ts
+@@ -227,6 +227,11 @@
+      * session on grouping surfaces. Pinning never touches workspace accounting.
+      * @returns Session ids in pin order (most recently pinned first).
+      */
++    /** Record authorization before a Session log is permanently removed. */
++    beginSessionDeletion(sessionId: SessionId): Promise<void>;
++    isSessionDeletionPending(sessionId: SessionId): boolean;
++    /** Remove a deleted Session from Workspace membership and registry metadata. */
++    forgetSession(sessionId: SessionId): Promise<void>;
+     get pinnedSessionIds(): readonly SessionId[];
+     /**
+      * Pin one session durably, prepending it to the registry-global pin set.
+diff --git a/lib/types/spec.js b/lib/types/spec.js
+--- a/lib/types/spec.js
++++ b/lib/types/spec.js
+@@ -49,6 +49,7 @@
+     defaultWorkspaceId: workspaceId.optional(),
+     workspaceIds: z.array(workspaceId),
+     archivedSessionIds: z.array(sessionId).default([]),
++    pendingSessionDeletionIds: z.array(sessionId).default([]),
+     pinnedSessionIds: z.array(sessionId).default([]),
+     pendingMutation: workspacePendingMutation.optional(),
+ });
+@@ -63,7 +64,7 @@
+     version: 2,
+     global: {
+         schema: workspaceDomainState,
+-        initial: { initialized: false, workspaceIds: [], archivedSessionIds: [], pinnedSessionIds: [] },
++        initial: { initialized: false, workspaceIds: [], archivedSessionIds: [], pendingSessionDeletionIds: [], pinnedSessionIds: [] },
+     },
+     tables: { workspaces: domainTable(workspaceRecord) },
+ });
+diff --git a/lib/types/spec.d.ts b/lib/types/spec.d.ts
+--- a/lib/types/spec.d.ts
++++ b/lib/types/spec.d.ts
+@@ -38,6 +38,7 @@
+     defaultWorkspaceId: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>>;
+     workspaceIds: z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>>;
+     archivedSessionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
++    pendingSessionDeletionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
+     pinnedSessionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
+     pendingMutation: z.ZodOptional<z.ZodDiscriminatedUnion<[z.ZodObject<{
+         operation: z.ZodLiteral<"create">;
+@@ -64,6 +65,7 @@
+             defaultWorkspaceId: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>>;
+             workspaceIds: z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<WorkspaceId, string>>>;
+             archivedSessionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
++            pendingSessionDeletionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
+             pinnedSessionIds: z.ZodDefault<z.ZodArray<z.ZodPipe<z.ZodString, z.ZodTransform<SessionId, string>>>>;
+             pendingMutation: z.ZodOptional<z.ZodDiscriminatedUnion<[z.ZodObject<{
+                 operation: z.ZodLiteral<"create">;
+@@ -77,6 +79,7 @@
+             initialized: boolean;
+             workspaceIds: never[];
+             archivedSessionIds: never[];
++            pendingSessionDeletionIds: never[];
+             pinnedSessionIds: never[];
+         };
+     };

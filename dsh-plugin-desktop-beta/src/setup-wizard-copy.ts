@@ -34,8 +34,6 @@ export interface DesktopSetupWizardCopy {
   readonly materialOffBody: string
   readonly materialTransparent: string
   readonly materialTransparentBody: string
-  readonly materialMica: string
-  readonly materialMicaBody: string
   readonly browserTitle: string
   readonly browserBody: string
   readonly openBrowser: string
@@ -116,8 +114,6 @@ const COPY: Record<DesktopLocale, DesktopSetupWizardCopy> = {
     materialOffBody: 'Use a solid, opaque window background.',
     materialTransparent: 'Glass background',
     materialTransparentBody: 'Show a blurred view of the content behind the window.',
-    materialMica: 'Mica',
-    materialMicaBody: 'Use the native Windows Mica material when it is supported.',
     browserTitle: 'Set up browser access',
     browserBody: 'Allow browser access to the current Profile and choose which devices can reach it.',
     openBrowser: 'Allow opening this Profile in a browser',
@@ -196,8 +192,6 @@ const COPY: Record<DesktopLocale, DesktopSetupWizardCopy> = {
     materialOffBody: '使用不透明的纯色窗口背景。',
     materialTransparent: '玻璃背景',
     materialTransparentBody: '透出窗口背后的内容，并呈现模糊效果。',
-    materialMica: 'Mica',
-    materialMicaBody: '在系统支持时使用 Windows 原生 Mica 材质。',
     browserTitle: '设置浏览器访问',
     browserBody: '允许在浏览器中打开当前 Profile，并选择可访问的设备范围。',
     openBrowser: '允许在浏览器中打开',

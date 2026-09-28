@@ -62,7 +62,7 @@ function exactMacosMaterial(value: string | null): DesktopSetupWizardMacosMateri
 }
 
 function exactWindowsMaterial(value: string | null): DesktopSetupWizardWindowsMaterial | undefined {
-  return value === 'off' || value === 'mica' ? value : undefined
+  return value === 'off' ? value : undefined
 }
 
 function exactNetworkExposure(value: string | null): DesktopSetupWizardNetworkExposure | undefined {

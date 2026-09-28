@@ -1,0 +1,48 @@
+diff --git a/lib/client.js b/lib/client.js
+--- a/lib/client.js
++++ b/lib/client.js
+@@ -9879,6 +9879,10 @@
+ 			"sessionId": intersection(string(), unknown()).readonly(),
+ 			"agentPreset": string().readonly().optional()
+ 		});
++		let _deepseek_ai_dsh_api_session_controller_session_delete_parameter_0$schema$value;
++		const _deepseek_ai_dsh_api_session_controller_session_delete_parameter_0$schema = () => _deepseek_ai_dsh_api_session_controller_session_delete_parameter_0$schema$value ??= object({ "sessionId": intersection(string(), unknown()).readonly() });
++		let _deepseek_ai_dsh_api_session_controller_session_delete_result$schema$value;
++		const _deepseek_ai_dsh_api_session_controller_session_delete_result$schema = () => _deepseek_ai_dsh_api_session_controller_session_delete_result$schema$value ??= object({ "deleted": literal(true).readonly() });
+ 		let _deepseek_ai_dsh_api_session_controller_session_follow_parameter_0$schema$value;
+ 		const _deepseek_ai_dsh_api_session_controller_session_follow_parameter_0$schema = () => _deepseek_ai_dsh_api_session_controller_session_follow_parameter_0$schema$value ??= object({
+ 			"address": union([object({
+@@ -10858,6 +10862,33 @@
+ 					}
+ 				},
+ 				{
++					id: "@deepseek-ai/dsh-api-session-controller#session/delete",
++					service: "sessionController",
++					namespace: "session",
++					method: "delete",
++					invocation: { kind: "direct" },
++					parameters: [{
++						name: "request",
++						wire: "request",
++						source: "json",
++						codec: {
++							mode: "strict",
++							typeSymbol: "@deepseek-ai/dsh-api-session-controller/types#SessionDeleteRequest",
++							create: _deepseek_ai_dsh_api_session_controller_session_delete_parameter_0$schema
++						}
++					}],
++					result: {
++						mode: "strict",
++						typeSymbol: "@deepseek-ai/dsh-api-session-controller/types#SessionDeleteValue",
++						create: _deepseek_ai_dsh_api_session_controller_session_delete_result$schema
++					},
++					sourceLocation: {
++						"file": "packages/api/session-controller/src/index.ts",
++						"line": 312,
++						"column": 3
++					}
++				},
++				{
+ 					id: "@deepseek-ai/dsh-api-session-controller#session/follow",
+ 					service: "sessionController",
+ 					namespace: "session",
