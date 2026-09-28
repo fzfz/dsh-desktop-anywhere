@@ -1351,6 +1351,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deepseek-ai/dsh-api-remotes@patch:@deepseek-ai/dsh-api-remotes@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-remotes-0.1.7-rc.2.tgz#./patches/dsh-api-remotes@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-api-remotes@patch:@deepseek-ai/dsh-api-remotes@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-remotes-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-remotes-0.1.7-rc.2.tgz%3A%3Ahash=e9dd84&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-api-remotes@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=132c7a&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/dsh-deque": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-session": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-util-values": "npm:0.1.7-rc.2"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+    "@deepseek-ai/dsh-scope": 0.1.7-rc.2
+  checksum: 10c0/b7bcf383ae4b0621c17c51d467bc42e490a5db32803717559c281ba1f24f352ca1f61a0966d59096df80688425ecf3ef229b8218e0da36a7383bc5fd5df75aa9
+  languageName: node
+  linkType: hard
+
 "@deepseek-ai/dsh-api-session-controller@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz::locator=deepseek-harness-desktop%40workspace%3A.":
   version: 0.1.7-rc.2
   resolution: "@deepseek-ai/dsh-api-session-controller@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz#vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz::hash=a35959&locator=deepseek-harness-desktop%40workspace%3A."
@@ -1399,6 +1413,57 @@ __metadata:
     "@deepseek-ai/dsh-settings":
       optional: true
   checksum: 10c0/c43f61c9ba95e235ab1a9bca81f4adb3cddfeb5019b02eb89f0266e1aa78ce5d821413abf757170df0b0bc13216268dd3b5eeedde258c627c0d0ca143af9f750
+  languageName: node
+  linkType: hard
+
+"@deepseek-ai/dsh-api-session-controller@patch:@deepseek-ai/dsh-api-session-controller@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz#./patches/dsh-api-session-controller@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-api-session-controller@patch:@deepseek-ai/dsh-api-session-controller@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz%3A%3Ahash=a35959&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-api-session-controller@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=fc633d&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/dsh-brand": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-deque": "npm:0.1.7-rc.2"
+    "@deepseek-ai/schemastery": "npm:~3.18.4"
+    mime-types: "npm:^3.0.2"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+    "@deepseek-ai/dsh-agent": 0.1.7-rc.2
+    "@deepseek-ai/dsh-agent-default-model": 0.1.7-rc.2
+    "@deepseek-ai/dsh-agent-preset-registry": 0.1.7-rc.2
+    "@deepseek-ai/dsh-api-gateway": 0.1.7-rc.2
+    "@deepseek-ai/dsh-attachment": 0.1.7-rc.2
+    "@deepseek-ai/dsh-client-connection": 0.1.7-rc.2
+    "@deepseek-ai/dsh-client-file-upload": 0.1.7-rc.2
+    "@deepseek-ai/dsh-commands": 0.1.7-rc.2
+    "@deepseek-ai/dsh-credentials": 0.1.7-rc.2
+    "@deepseek-ai/dsh-file-reference": 0.1.7-rc.2
+    "@deepseek-ai/dsh-fs": 0.1.7-rc.2
+    "@deepseek-ai/dsh-llm": 0.1.7-rc.2
+    "@deepseek-ai/dsh-native-command": 0.1.7-rc.2
+    "@deepseek-ai/dsh-scope": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-persistence": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-projection": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-projection-cache": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-query": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-title": 0.1.7-rc.2
+    "@deepseek-ai/dsh-settings": 0.1.7-rc.2
+    "@deepseek-ai/dsh-skill": 0.1.7-rc.2
+    "@deepseek-ai/dsh-subagent": 0.1.7-rc.2
+    "@deepseek-ai/dsh-typert-protocol": 0.1.7-rc.2
+    "@deepseek-ai/dsh-typert-registry": 0.1.7-rc.2
+    "@deepseek-ai/dsh-util-time": 0.1.7-rc.2
+    "@deepseek-ai/dsh-util-values": 0.1.7-rc.2
+    "@deepseek-ai/dsh-util-workspace-path": 0.1.7-rc.2
+    "@deepseek-ai/dsh-workspace": 0.1.7-rc.2
+  peerDependenciesMeta:
+    "@deepseek-ai/dsh-session-persistence":
+      optional: true
+    "@deepseek-ai/dsh-session-projection-cache":
+      optional: true
+    "@deepseek-ai/dsh-settings":
+      optional: true
+  checksum: 10c0/b1379b67b575fee5993846c6db7e4966c76122d4941237bb87bb772610a38647fdbbbeb4c998628d5f0bf0648948351d1df44b31fba39c1b08c8b61e4a4d5ef1
   languageName: node
   linkType: hard
 
@@ -2167,6 +2232,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deepseek-ai/dsh-client-ui-settings-models@patch:@deepseek-ai/dsh-client-ui-settings-models@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-settings-models-0.1.7-rc.2.tgz#./patches/dsh-client-ui-settings-models@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-client-ui-settings-models@patch:@deepseek-ai/dsh-client-ui-settings-models@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-settings-models-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-settings-models-0.1.7-rc.2.tgz%3A%3Ahash=312898&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-client-ui-settings-models@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=63a520&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/schemastery": "npm:~3.18.4"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+  checksum: 10c0/43e9823385650f7598779cbb076121e1ec2b5fdf7558b4ada91b71bd5e2a4da8dfa041255db556815c2f547869e2b566add0fdfe2c4f23b6f75c73f00da1af48
+  languageName: node
+  linkType: hard
+
 "@deepseek-ai/dsh-client-ui-settings-plugin-inventory@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-settings-plugin-inventory-0.1.7-rc.2.tgz::locator=deepseek-harness-desktop%40workspace%3A.":
   version: 0.1.7-rc.2
   resolution: "@deepseek-ai/dsh-client-ui-settings-plugin-inventory@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-settings-plugin-inventory-0.1.7-rc.2.tgz#vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-settings-plugin-inventory-0.1.7-rc.2.tgz::hash=f1f345&locator=deepseek-harness-desktop%40workspace%3A."
@@ -2377,6 +2453,15 @@ __metadata:
   peerDependencies:
     "@deepseek-ai/cordis": ~4.0.4
   checksum: 10c0/7e8f1425b51cbc83285bfc423970ec8dd327ead414e31329b133c17d106380631d776a412f827c31782f3d5808428e5bb995db5b0430bd0f4643bacc0ed8cb2b
+  languageName: node
+  linkType: hard
+
+"@deepseek-ai/dsh-client-ui-workspace@patch:@deepseek-ai/dsh-client-ui-workspace@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-workspace-0.1.7-rc.2.tgz#./patches/dsh-client-ui-workspace@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-client-ui-workspace@patch:@deepseek-ai/dsh-client-ui-workspace@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-workspace-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-client-ui-workspace-0.1.7-rc.2.tgz%3A%3Ahash=b79d10&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-client-ui-workspace@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=107d62&locator=deepseek-harness-desktop%40workspace%3A."
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+  checksum: 10c0/ffdc5f4e6a61d1846917e3f9bd80b996733aaf29eee12a2021b986561a5a406fcdd5d151d308046473e916711a345b2cea89763df04b1204f270040f1ef5bac0
   languageName: node
   linkType: hard
 
@@ -3379,6 +3464,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deepseek-ai/dsh-llm-pi-ai@patch:@deepseek-ai/dsh-llm-pi-ai@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-llm-pi-ai-0.1.7-rc.2.tgz#./patches/dsh-llm-pi-ai@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-llm-pi-ai@patch:@deepseek-ai/dsh-llm-pi-ai@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-llm-pi-ai-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-llm-pi-ai-0.1.7-rc.2.tgz%3A%3Ahash=75b0d6&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-llm-pi-ai@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=517b2d&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/dsh-brand": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-util-values": "npm:0.1.7-rc.2"
+    "@deepseek-ai/schemastery": "npm:~3.18.4"
+    "@earendil-works/pi-ai": "npm:^0.85.1"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+    "@deepseek-ai/cordis-plugin-loader": ~1.0.5
+    "@deepseek-ai/dsh-attachment": 0.1.7-rc.2
+    "@deepseek-ai/dsh-authorization": 0.1.7-rc.2
+    "@deepseek-ai/dsh-credentials": 0.1.7-rc.2
+    "@deepseek-ai/dsh-fs": 0.1.7-rc.2
+    "@deepseek-ai/dsh-launch-environment": 0.1.7-rc.2
+    "@deepseek-ai/dsh-llm": 0.1.7-rc.2
+    "@deepseek-ai/dsh-timeout": 0.1.7-rc.2
+  peerDependenciesMeta:
+    "@deepseek-ai/cordis-plugin-loader":
+      optional: true
+  checksum: 10c0/6abfd43aa2a9e481ec8a7545cdfa6a3b45675b6716a43f840fe4ec2171c4cb6f60211f8e9aa8a824b1e6ead1961d3d91d1d1b1187c2c285d34a7fbdf392829b3
+  languageName: node
+  linkType: hard
+
 "@deepseek-ai/dsh-llm-retry@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-llm-retry-0.1.7-rc.2.tgz::locator=deepseek-harness-desktop%40workspace%3A.":
   version: 0.1.7-rc.2
   resolution: "@deepseek-ai/dsh-llm-retry@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-llm-retry-0.1.7-rc.2.tgz#vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-llm-retry-0.1.7-rc.2.tgz::hash=c601ce&locator=deepseek-harness-desktop%40workspace%3A."
@@ -4118,6 +4228,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deepseek-ai/dsh-session-persistence-jsonl@patch:@deepseek-ai/dsh-session-persistence-jsonl@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-jsonl-0.1.7-rc.2.tgz#./patches/dsh-session-persistence-jsonl@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-session-persistence-jsonl@patch:@deepseek-ai/dsh-session-persistence-jsonl@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-jsonl-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-jsonl-0.1.7-rc.2.tgz%3A%3Ahash=329b5f&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-session-persistence-jsonl@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=560fe6&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/dsh-llm": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-session-format": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-session-format-catalog": "npm:0.1.7-rc.2"
+    "@deepseek-ai/dsh-session-format-v3-to-v4": "npm:0.1.7-rc.2"
+    "@deepseek-ai/node-addon-system": "npm:~0.1.2"
+    "@deepseek-ai/schemastery": "npm:~3.18.4"
+    koffi: "npm:^3.1.0"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+    "@deepseek-ai/dsh-session": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-persistence": 0.1.7-rc.2
+  checksum: 10c0/7f0d303d2e401e488b65bae720651f64ce91ebd3cf8c92280ab66634fea798cb27d0bcdb73aff02acbbb63e638f1767693e13f9f3850caec257f41811e590db3
+  languageName: node
+  linkType: hard
+
 "@deepseek-ai/dsh-session-persistence@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-0.1.7-rc.2.tgz::locator=deepseek-harness-desktop%40workspace%3A.":
   version: 0.1.7-rc.2
   resolution: "@deepseek-ai/dsh-session-persistence@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-0.1.7-rc.2.tgz#vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-0.1.7-rc.2.tgz::hash=7213c0&locator=deepseek-harness-desktop%40workspace%3A."
@@ -4129,6 +4258,20 @@ __metadata:
     "@deepseek-ai/dsh-session": 0.1.7-rc.2
     "@deepseek-ai/dsh-timeout": 0.1.7-rc.2
   checksum: 10c0/6b88c82dfdbed10be1064e7cb85950cb2ae6f9ca20d75e6205dcad102258cdf90ec0c47fc52d34d3c6ddbaeed73b0747c0fb13d4f5d24c56e32649eadb85714f
+  languageName: node
+  linkType: hard
+
+"@deepseek-ai/dsh-session-persistence@patch:@deepseek-ai/dsh-session-persistence@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-0.1.7-rc.2.tgz#./patches/dsh-session-persistence@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-session-persistence@patch:@deepseek-ai/dsh-session-persistence@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-session-persistence-0.1.7-rc.2.tgz%3A%3Ahash=7213c0&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-session-persistence@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=b82d1c&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/dsh-util-values": "npm:0.1.7-rc.2"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+    "@deepseek-ai/dsh-brand": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session": 0.1.7-rc.2
+    "@deepseek-ai/dsh-timeout": 0.1.7-rc.2
+  checksum: 10c0/69ddaebdff0a95a40708d37264b372349c5c1f437ecc40f7eb086d3f1ea628b0baf6010c7f103f2f94c0bc443614eb283eccd31291b1f7d5168c8ac7f8e477cb
   languageName: node
   linkType: hard
 
@@ -5733,6 +5876,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deepseek-ai/dsh-workspace@patch:@deepseek-ai/dsh-workspace@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-workspace-0.1.7-rc.2.tgz#./patches/dsh-workspace@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 0.1.7-rc.2
+  resolution: "@deepseek-ai/dsh-workspace@patch:@deepseek-ai/dsh-workspace@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-workspace-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-workspace-0.1.7-rc.2.tgz%3A%3Ahash=4745e4&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-workspace@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=fb2965&locator=deepseek-harness-desktop%40workspace%3A."
+  dependencies:
+    "@deepseek-ai/dsh-brand": "npm:0.1.7-rc.2"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    "@deepseek-ai/cordis": ~4.0.4
+    "@deepseek-ai/dsh-invariants": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session": 0.1.7-rc.2
+    "@deepseek-ai/dsh-session-persistence": 0.1.7-rc.2
+    "@deepseek-ai/dsh-storage": 0.1.7-rc.2
+    "@deepseek-ai/dsh-storage-domain": 0.1.7-rc.2
+    "@deepseek-ai/dsh-typert-protocol": 0.1.7-rc.2
+  checksum: 10c0/df8340dda94da28b21887d29182cf5d7a80dfba7319a3de283239ee51021c2c10b0908a93934dd6f522f69ed98480bd07f2699ae3d5ea5d807ff95628b5694ca
+  languageName: node
+  linkType: hard
+
 "@deepseek-ai/dsh@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-0.1.7-rc.2.tgz::locator=deepseek-harness-desktop%40workspace%3A.":
   version: 0.1.7-rc.2
   resolution: "@deepseek-ai/dsh@file:vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-0.1.7-rc.2.tgz#vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-0.1.7-rc.2.tgz::hash=131c0d&locator=deepseek-harness-desktop%40workspace%3A."
@@ -6259,7 +6420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emnapi/runtime@npm:^1.11.1":
+"@emnapi/runtime@npm:^1.11.1, @emnapi/runtime@npm:^1.11.3":
   version: 1.11.3
   resolution: "@emnapi/runtime@npm:1.11.3"
   dependencies:
@@ -6383,11 +6544,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-darwin-arm64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-darwin-arm64@npm:0.35.3"
+"@img/sharp-darwin-arm64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-darwin-arm64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-darwin-arm64": "npm:1.3.2"
+    "@img/sharp-libvips-darwin-arm64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-darwin-arm64":
       optional: true
@@ -6395,11 +6556,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-darwin-x64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-darwin-x64@npm:0.35.3"
+"@img/sharp-darwin-x64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-darwin-x64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-darwin-x64": "npm:1.3.2"
+    "@img/sharp-libvips-darwin-x64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-darwin-x64":
       optional: true
@@ -6407,90 +6568,90 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-freebsd-wasm32@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-freebsd-wasm32@npm:0.35.3"
+"@img/sharp-freebsd-wasm32@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-freebsd-wasm32@npm:0.35.4"
   dependencies:
-    "@img/sharp-wasm32": "npm:0.35.3"
+    "@img/sharp-wasm32": "npm:0.35.4"
   conditions: os=freebsd
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-darwin-arm64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-darwin-arm64@npm:1.3.2"
+"@img/sharp-libvips-darwin-arm64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-darwin-arm64@npm:1.3.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-darwin-x64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-darwin-x64@npm:1.3.2"
+"@img/sharp-libvips-darwin-x64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-darwin-x64@npm:1.3.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-arm64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linux-arm64@npm:1.3.2"
+"@img/sharp-libvips-linux-arm64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linux-arm64@npm:1.3.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-arm@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linux-arm@npm:1.3.2"
+"@img/sharp-libvips-linux-arm@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linux-arm@npm:1.3.3"
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-ppc64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linux-ppc64@npm:1.3.2"
+"@img/sharp-libvips-linux-ppc64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linux-ppc64@npm:1.3.3"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-riscv64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linux-riscv64@npm:1.3.2"
+"@img/sharp-libvips-linux-riscv64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linux-riscv64@npm:1.3.3"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-s390x@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linux-s390x@npm:1.3.2"
+"@img/sharp-libvips-linux-s390x@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linux-s390x@npm:1.3.3"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-x64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linux-x64@npm:1.3.2"
+"@img/sharp-libvips-linux-x64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linux-x64@npm:1.3.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linuxmusl-arm64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linuxmusl-arm64@npm:1.3.2"
+"@img/sharp-libvips-linuxmusl-arm64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linuxmusl-arm64@npm:1.3.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linuxmusl-x64@npm:1.3.2":
-  version: 1.3.2
-  resolution: "@img/sharp-libvips-linuxmusl-x64@npm:1.3.2"
+"@img/sharp-libvips-linuxmusl-x64@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@img/sharp-libvips-linuxmusl-x64@npm:1.3.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-arm64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linux-arm64@npm:0.35.3"
+"@img/sharp-linux-arm64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linux-arm64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linux-arm64": "npm:1.3.2"
+    "@img/sharp-libvips-linux-arm64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linux-arm64":
       optional: true
@@ -6498,11 +6659,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-arm@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linux-arm@npm:0.35.3"
+"@img/sharp-linux-arm@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linux-arm@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linux-arm": "npm:1.3.2"
+    "@img/sharp-libvips-linux-arm": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linux-arm":
       optional: true
@@ -6510,11 +6671,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-ppc64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linux-ppc64@npm:0.35.3"
+"@img/sharp-linux-ppc64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linux-ppc64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linux-ppc64": "npm:1.3.2"
+    "@img/sharp-libvips-linux-ppc64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linux-ppc64":
       optional: true
@@ -6522,11 +6683,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-riscv64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linux-riscv64@npm:0.35.3"
+"@img/sharp-linux-riscv64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linux-riscv64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linux-riscv64": "npm:1.3.2"
+    "@img/sharp-libvips-linux-riscv64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linux-riscv64":
       optional: true
@@ -6534,11 +6695,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-s390x@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linux-s390x@npm:0.35.3"
+"@img/sharp-linux-s390x@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linux-s390x@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linux-s390x": "npm:1.3.2"
+    "@img/sharp-libvips-linux-s390x": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linux-s390x":
       optional: true
@@ -6546,11 +6707,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-x64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linux-x64@npm:0.35.3"
+"@img/sharp-linux-x64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linux-x64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linux-x64": "npm:1.3.2"
+    "@img/sharp-libvips-linux-x64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linux-x64":
       optional: true
@@ -6558,11 +6719,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linuxmusl-arm64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linuxmusl-arm64@npm:0.35.3"
+"@img/sharp-linuxmusl-arm64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linuxmusl-arm64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.3.2"
+    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linuxmusl-arm64":
       optional: true
@@ -6570,11 +6731,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linuxmusl-x64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-linuxmusl-x64@npm:0.35.3"
+"@img/sharp-linuxmusl-x64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-linuxmusl-x64@npm:0.35.4"
   dependencies:
-    "@img/sharp-libvips-linuxmusl-x64": "npm:1.3.2"
+    "@img/sharp-libvips-linuxmusl-x64": "npm:1.3.3"
   dependenciesMeta:
     "@img/sharp-libvips-linuxmusl-x64":
       optional: true
@@ -6582,41 +6743,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-wasm32@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-wasm32@npm:0.35.3"
+"@img/sharp-wasm32@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-wasm32@npm:0.35.4"
   dependencies:
-    "@emnapi/runtime": "npm:^1.11.1"
-  checksum: 10c0/627125c330ab96e324c888d3c43fa72eb7c975e653277755121df14447373b7b47b011a1eae9c8c360a9535a7072bd6205b6498974006124b513c033a07e0e32
+    "@emnapi/runtime": "npm:^1.11.3"
+  checksum: 10c0/7f5e394f168eb2f038b8ae4949fb5434085d1db931ede2ae1389479d7a1dbe11e2fc9d58e8e9830bff744ba996256c9e411be1d466dfcbf6e1f4d153b84f25ff
   languageName: node
   linkType: hard
 
-"@img/sharp-webcontainers-wasm32@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-webcontainers-wasm32@npm:0.35.3"
+"@img/sharp-webcontainers-wasm32@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-webcontainers-wasm32@npm:0.35.4"
   dependencies:
-    "@img/sharp-wasm32": "npm:0.35.3"
+    "@img/sharp-wasm32": "npm:0.35.4"
   conditions: cpu=wasm32
   languageName: node
   linkType: hard
 
-"@img/sharp-win32-arm64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-win32-arm64@npm:0.35.3"
+"@img/sharp-win32-arm64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-win32-arm64@npm:0.35.4"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@img/sharp-win32-ia32@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-win32-ia32@npm:0.35.3"
+"@img/sharp-win32-ia32@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-win32-ia32@npm:0.35.4"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@img/sharp-win32-x64@npm:0.35.3":
-  version: 0.35.3
-  resolution: "@img/sharp-win32-x64@npm:0.35.3"
+"@img/sharp-win32-x64@npm:0.35.4":
+  version: 0.35.4
+  resolution: "@img/sharp-win32-x64@npm:0.35.4"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -8520,25 +8681,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/expect@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/expect@npm:4.1.8"
+"@vitest/expect@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/expect@npm:4.1.11"
   dependencies:
     "@standard-schema/spec": "npm:^1.1.0"
     "@types/chai": "npm:^5.2.2"
-    "@vitest/spy": "npm:4.1.8"
-    "@vitest/utils": "npm:4.1.8"
+    "@vitest/spy": "npm:4.1.11"
+    "@vitest/utils": "npm:4.1.11"
     chai: "npm:^6.2.2"
     tinyrainbow: "npm:^3.1.0"
-  checksum: 10c0/f7bf6c720d2427c3bd0b35472ebd84d963be7d09ecf52a0fb05e8c4d5d0c9ee164a8c28eee6360947be1b245b47faefab54560cb98e5cb678c1c1074260b9149
+  checksum: 10c0/0aa5e0973aca93a58cbdc3041c6bfed5897e976124965203b96a23b811f4ca403590c7eb15802c8d8366ec27a1db0682451e8a91c4d06617636de262baf86e4b
   languageName: node
   linkType: hard
 
-"@vitest/mocker@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/mocker@npm:4.1.8"
+"@vitest/mocker@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/mocker@npm:4.1.11"
   dependencies:
-    "@vitest/spy": "npm:4.1.8"
+    "@vitest/spy": "npm:4.1.11"
     estree-walker: "npm:^3.0.3"
     magic-string: "npm:^0.30.21"
   peerDependencies:
@@ -8549,56 +8710,56 @@ __metadata:
       optional: true
     vite:
       optional: true
-  checksum: 10c0/f8cb2b8b55dc2cba0b2399aeee528b0187042f22cbc2d50a4fd6141f5aa246ebc41700f45dd1d73eca44ddfb57dcde48b2eb317bfbb1198f5ab2cc4fd04b2ea0
+  checksum: 10c0/3111ea34bd5046f6c70bbd67cf8b89608ee8c41cb27ab2bd61d42f4b68810e9ea16a9a757a71bc254c105f73b407d00ebb6bab1ab0f7f5cdcc9d7d16602a3933
   languageName: node
   linkType: hard
 
-"@vitest/pretty-format@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/pretty-format@npm:4.1.8"
+"@vitest/pretty-format@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/pretty-format@npm:4.1.11"
   dependencies:
     tinyrainbow: "npm:^3.1.0"
-  checksum: 10c0/553c456692a4b9ae13cd116c234c74b4495e0f1a0d5c51ffc3fab8ea085e3550769967e29db79bdac0cf127b1bf88b7f70bfba3dcc72be6bddf834433e30cc91
+  checksum: 10c0/ad32525c73807c0b72f38dc29bc51fd5a17879dc650f37995a9c5adbb8526e15f787691f76aa8768448ec7ed5bf5ba2b12329eac8fda1428b4d6b8c036390f71
   languageName: node
   linkType: hard
 
-"@vitest/runner@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/runner@npm:4.1.8"
+"@vitest/runner@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/runner@npm:4.1.11"
   dependencies:
-    "@vitest/utils": "npm:4.1.8"
+    "@vitest/utils": "npm:4.1.11"
     pathe: "npm:^2.0.3"
-  checksum: 10c0/706808a4b7b95ea9a9268fc152dd39e15a9a754f37c7990aea167486a9094caa913dae454771ae02c18dccfabd667f8cc38eed33a1307a79d32a89878b5bcce1
+  checksum: 10c0/3c782b055e9e688e1785f7c8937bd1669bad1b0e5758cb8b844f918f30a324b1d21e174d46c941ce80ebf37f2b89b55b6d619a675025914a1ece6377b95909e2
   languageName: node
   linkType: hard
 
-"@vitest/snapshot@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/snapshot@npm:4.1.8"
+"@vitest/snapshot@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/snapshot@npm:4.1.11"
   dependencies:
-    "@vitest/pretty-format": "npm:4.1.8"
-    "@vitest/utils": "npm:4.1.8"
+    "@vitest/pretty-format": "npm:4.1.11"
+    "@vitest/utils": "npm:4.1.11"
     magic-string: "npm:^0.30.21"
     pathe: "npm:^2.0.3"
-  checksum: 10c0/ba4c32112491d42d24986f921c50ede5edbdb4b7eafa16c72cf8d2c9ecc44121fdb3d9365236747a9841f0d6776affc6457470fcbb082df9dbc28c24792a0c6d
+  checksum: 10c0/35d82a7c2a3e4b57529c30387d568d9106b6bf960189214e5d8cb1f5288cb042305c2e5c7b0b2f8cb56a2c814973de0310bc56d72deb79427bea272b6224190c
   languageName: node
   linkType: hard
 
-"@vitest/spy@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/spy@npm:4.1.8"
-  checksum: 10c0/3c10c0325a09d16bc0e77c0be96c47c15416186e33332880c0d1dd0a51d51a866091067b81f2a2ef6fb422a7760e6cf15c04d91a0eca4d59f62e8c8401fa53fc
+"@vitest/spy@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/spy@npm:4.1.11"
+  checksum: 10c0/06c68247a8efd21006abe7532fee17f30ba83c8cda3e0b952ef89e278d58058f4b1de69b6bbaa2ed614c568bf4f5769fcc76be42802dedf2bcdd9c0aae601740
   languageName: node
   linkType: hard
 
-"@vitest/utils@npm:4.1.8":
-  version: 4.1.8
-  resolution: "@vitest/utils@npm:4.1.8"
+"@vitest/utils@npm:4.1.11":
+  version: 4.1.11
+  resolution: "@vitest/utils@npm:4.1.11"
   dependencies:
-    "@vitest/pretty-format": "npm:4.1.8"
+    "@vitest/pretty-format": "npm:4.1.11"
     convert-source-map: "npm:^2.0.0"
     tinyrainbow: "npm:^3.1.0"
-  checksum: 10c0/acda9d3d640c1ebc81afb358ac30589d7d7d583af81e2d09419f0af9cbe41f3ce0b90527326943bf0da51614be5fc31afcd32259f6beb32b3417999d6ef380f3
+  checksum: 10c0/a2c1ddc64333458c3e031465c1ee0440a7660fd1b298c54ccbf865ef1e5cf3ebdd6c5c75a5ea235d8a672498b394e7121f992b096f021f45014ab25e9abd1b52
   languageName: node
   linkType: hard
 
@@ -8776,17 +8937,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xmldom/xmldom@npm:^0.8.8":
-  version: 0.8.14
-  resolution: "@xmldom/xmldom@npm:0.8.14"
-  checksum: 10c0/dde6f8ca418ff7436ff61063e7bb8c3773ed9d01f420bf1251a6c13a5d3b088ead7c9c66ca56343615a1f304fe4907db0a9b8ff55fc9319e215fa5ca198555c9
+"@xmldom/xmldom@npm:0.8.15":
+  version: 0.8.15
+  resolution: "@xmldom/xmldom@npm:0.8.15"
+  checksum: 10c0/59d09b85824b684fba5a0a224d5b43abea1a0d745e8d8b8136a7013e996eb6da122fdbb3deb32ed1621923a10e1937b1f7917cea43481d9d5b976e8c1ff836c1
   languageName: node
   linkType: hard
 
-"@xmldom/xmldom@npm:^0.9.10":
-  version: 0.9.11
-  resolution: "@xmldom/xmldom@npm:0.9.11"
-  checksum: 10c0/f29dd4a35b525224cb1bdc8728041fdab218c3a2f5572452c764781490d64a6755f34a1792212abe7ca319a18b157de5dcf9734f067560b968e6ba2b66d58f0f
+"@xmldom/xmldom@npm:0.9.12":
+  version: 0.9.12
+  resolution: "@xmldom/xmldom@npm:0.9.12"
+  checksum: 10c0/0a9ef38e203213717dde8d16c62743c26c37eb4195aeb4f286550a0aec2145c063a6c3633f253c29f75202f922d7c961d1acaad4dd93e5db1ef05c813354d178
   languageName: node
   linkType: hard
 
@@ -8828,10 +8989,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"adm-zip@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "adm-zip@npm:0.6.0"
-  checksum: 10c0/440f37590c62255226f1db4cb1a5a618879347f5106ad5b9a24c67c20f9a54bd5b4efcd2b35af858e39c7885d05f4bd35f4c2f42378c98d13f779be380bc9ae4
+"adm-zip@npm:0.6.1":
+  version: 0.6.1
+  resolution: "adm-zip@npm:0.6.1"
+  checksum: 10c0/78233c6fbfd418dd605ef3c4c6a656406a49f81f716f2850d565f5e55915f18b99f4fdaf15436d77c73536da0915eeca33adab8055872a983b0ac7d07664cd25
   languageName: node
   linkType: hard
 
@@ -10257,10 +10418,10 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     semver: "npm:^7.7.3"
-    sharp: "npm:0.35.3"
+    sharp: "npm:0.35.4"
     tsdown: "npm:0.22.2"
     typescript: "npm:6.0.3"
-    vitest: "npm:4.1.8"
+    vitest: "npm:4.1.11"
     yaml: "npm:^2.9.0"
     zod: "npm:^4.4.3"
   peerDependencies:
@@ -10566,7 +10727,7 @@ __metadata:
     micromark-util-sanitize-uri: "npm:^2.0.1"
     micromark-util-symbol: "npm:^2.0.1"
     playwright: "npm:1.63.0"
-    pnpm: "npm:11.8.0"
+    pnpm: "npm:11.11.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     selfsigned: "npm:5.5.0"
@@ -10580,7 +10741,7 @@ __metadata:
     tw-animate-css: "npm:^1.4.0"
     typescript: "npm:6.0.3"
     vite: "npm:8.2.1"
-    vitest: "npm:4.1.8"
+    vitest: "npm:4.1.11"
     yaml: "npm:^2.9.0"
     zustand: "npm:~4.4.7"
   languageName: unknown
@@ -10761,7 +10922,7 @@ __metadata:
     "@types/react-dom": "npm:^18"
     "@types/semver": "npm:^7.7.1"
     "@vitejs/plugin-react": "npm:^6"
-    adm-zip: "npm:^0.6.0"
+    adm-zip: "npm:0.6.1"
     builder-util: "npm:26.15.3"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
@@ -10776,13 +10937,13 @@ __metadata:
     lucide-react: "npm:^1.33.0"
     node-addon-require-builtin: "npm:^0.1.6"
     node-gyp: "npm:13.0.1"
-    pnpm: "npm:11.8.0"
+    pnpm: "npm:11.11.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     selfsigned: "npm:5.5.0"
     semver: "npm:^7.8.5"
     shadcn: "npm:^4.18.0"
-    sharp: "npm:0.35.3"
+    sharp: "npm:0.35.4"
     sonner: "npm:^2.0.8"
     tailwind-merge: "npm:^3.6.0"
     tailwindcss: "npm:^4"
@@ -10790,7 +10951,7 @@ __metadata:
     tw-animate-css: "npm:^1.4.0"
     typescript: "npm:6.0.3"
     vite: "npm:8.2.1"
-    vitest: "npm:4.1.8"
+    vitest: "npm:4.1.11"
     yaml: "npm:^2.9.0"
   peerDependencies:
     electron: 44.0.0
@@ -10975,7 +11136,7 @@ __metadata:
     "@types/react-dom": "npm:^18"
     "@types/semver": "npm:^7.7.1"
     "@vitejs/plugin-react": "npm:^6"
-    adm-zip: "npm:^0.6.0"
+    adm-zip: "npm:0.6.1"
     builder-util: "npm:26.15.3"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
@@ -10990,13 +11151,13 @@ __metadata:
     lucide-react: "npm:^1.33.0"
     node-addon-require-builtin: "npm:^0.1.6"
     node-gyp: "npm:13.0.1"
-    pnpm: "npm:11.8.0"
+    pnpm: "npm:11.11.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     selfsigned: "npm:5.5.0"
     semver: "npm:^7.8.5"
     shadcn: "npm:^4.18.0"
-    sharp: "npm:0.35.3"
+    sharp: "npm:0.35.4"
     sonner: "npm:^2.0.8"
     tailwind-merge: "npm:^3.6.0"
     tailwindcss: "npm:^4"
@@ -11004,7 +11165,7 @@ __metadata:
     tw-animate-css: "npm:^1.4.0"
     typescript: "npm:6.0.3"
     vite: "npm:8.2.1"
-    vitest: "npm:4.1.8"
+    vitest: "npm:4.1.11"
     yaml: "npm:^2.9.0"
   peerDependencies:
     electron: 44.0.0
@@ -11536,10 +11697,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-uri@npm:^3.0.1":
-  version: 3.1.5
-  resolution: "fast-uri@npm:3.1.5"
-  checksum: 10c0/2bf60eb800dd610c65e17be436425dcb21c92aff3a87d442a8bccab0b7b071e88cf1a5d7d1ea946370b937e6fc0375c405c0296c10587e57de4f78be4646d1d0
+"fast-uri@npm:3.1.6":
+  version: 3.1.6
+  resolution: "fast-uri@npm:3.1.6"
+  checksum: 10c0/77fa4f966f7d2cf83c34af2d3eb88882872fe90634f27a6bd309551db65377d3ca55616467c7cb4dcc57e33523d149e2fec1952d51cc2f00bfce68a66c3711ea
   languageName: node
   linkType: hard
 
@@ -11574,14 +11735,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fflate@npm:0.8.2":
-  version: 0.8.2
-  resolution: "fflate@npm:0.8.2"
-  checksum: 10c0/03448d630c0a583abea594835a9fdb2aaf7d67787055a761515bf4ed862913cfd693b4c4ffd5c3f3b355a70cf1e19033e9ae5aedcca103188aaff91b8bd6e293
-  languageName: node
-  linkType: hard
-
-"fflate@npm:^0.8.2":
+"fflate@npm:0.8.3, fflate@npm:^0.8.2":
   version: 0.8.3
   resolution: "fflate@npm:0.8.3"
   checksum: 10c0/eab181ca37f5348ae76d4b6f840e0026e30220e33153289ac942222d8b9638237d486507dbcc09878d724095bd354993a2ee48bbee99c8f2c6440d4448719aa7
@@ -12117,10 +12271,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.11.4":
-  version: 4.13.2
-  resolution: "hono@npm:4.13.2"
-  checksum: 10c0/063daaa596bfb1ed3a4dc523a9f47725cf8d56e0918c21a241161f6f1996229f5525bf0f70d6b15cc28912720ddde519584eeb06fb92730a66f01e39faba8131
+"hono@npm:4.13.5":
+  version: 4.13.5
+  resolution: "hono@npm:4.13.5"
+  checksum: 10c0/c4ec94e9d6fdefbdfc011b3f06a201ed134c38c8db77fb65ef7282ef445526ce188ce3f80a2f2638ad30d93bb2a03e43bb34ed254a82b8e82011e5d7e0dc02ba
   languageName: node
   linkType: hard
 
@@ -12544,14 +12698,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.1.0, js-yaml@npm:^4.2.0":
-  version: 4.3.1
-  resolution: "js-yaml@npm:4.3.1"
+"js-yaml@npm:4.3.2":
+  version: 4.3.2
+  resolution: "js-yaml@npm:4.3.2"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10c0/13c500ca322e0c3f8c81686e6ecda96d2ea37b45247a420c17c7db36932d6965cc27391abc2d1a104501600e7f0d947a5f8b7be6db619c4fefa87901b3512807
+  checksum: 10c0/dedd34c2e8fef1d504687f1bc94ed0ee1311a1f78770fa2800352c6d59c635ccf555009d74e9afe529ae62199da2b1ccef30e53dc84dcd8d2d8187c22574bc97
   languageName: node
   linkType: hard
 
@@ -14701,9 +14855,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pnpm@npm:11.8.0":
-  version: 11.8.0
-  resolution: "pnpm@npm:11.8.0"
+"pnpm@npm:11.11.0":
+  version: 11.11.0
+  resolution: "pnpm@npm:11.11.0"
   dependencies:
     node-gyp: "npm:latest"
   bin:
@@ -14711,13 +14865,13 @@ __metadata:
     pnpm: bin/pnpm.mjs
     pnpx: bin/pnpx.mjs
     pnx: bin/pnpx.mjs
-  checksum: 10c0/a24262bc503a6007a1948c2182377b30d22e8e192cb2b85e8dd7e2bbac0e87ed1426f454a73ed95943f36177d54938a02d5d6cbbadf01f58467c8c2d06d1a35d
+  checksum: 10c0/c42166eb11d7965eb1c0810105b0d36d875d59118a3577decdfa5ec4417791ade583a0dba62ab91aca65e9eec93d60686fbef742f38d866580dc4651acb0557e
   languageName: node
   linkType: hard
 
-"pnpm@patch:pnpm@npm%3A11.8.0#./patches/pnpm@11.8.0.patch::locator=deepseek-harness-desktop%40workspace%3A.":
-  version: 11.8.0
-  resolution: "pnpm@patch:pnpm@npm%3A11.8.0#./patches/pnpm@11.8.0.patch::version=11.8.0&hash=13eaf9&locator=deepseek-harness-desktop%40workspace%3A."
+"pnpm@patch:pnpm@npm%3A11.11.0#./patches/pnpm@11.11.0.patch::locator=deepseek-harness-desktop%40workspace%3A.":
+  version: 11.11.0
+  resolution: "pnpm@patch:pnpm@npm%3A11.11.0#./patches/pnpm@11.11.0.patch::version=11.11.0&hash=13eaf9&locator=deepseek-harness-desktop%40workspace%3A."
   dependencies:
     node-gyp: "npm:latest"
   bin:
@@ -14725,7 +14879,7 @@ __metadata:
     pnpm: bin/pnpm.mjs
     pnpx: bin/pnpx.mjs
     pnx: bin/pnpx.mjs
-  checksum: 10c0/b1015c7aa081daf65d4ad34f3baddd80fca6a97ac0e23d5733f84dc648cde34092294651855b860d98bbf77713ddb75e78bf7869b46e29bcb5964d2df8ebcece
+  checksum: 10c0/9ec011e5af6b924cce40480026c605356faaf5c03fd62130211968bb2268dced49a44474c2959e25185919c52014f45a0d16d5bc0039fc4f49bc4887a0e67a2d
   languageName: node
   linkType: hard
 
@@ -14943,13 +15097,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.14.0, qs@npm:^6.15.2":
-  version: 6.15.3
-  resolution: "qs@npm:6.15.3"
+"qs@npm:6.16.0":
+  version: 6.16.0
+  resolution: "qs@npm:6.16.0"
   dependencies:
     es-define-property: "npm:^1.0.1"
     side-channel: "npm:^1.1.1"
-  checksum: 10c0/8f3f6e45ece255347d57696628401cde29e9ec649fff698b53bd3150dea7cefdf33036e1bc1826b9f110bfa7cb0ec4ab9f5297eca628ce216c55af82c304e08e
+  checksum: 10c0/eb3e31992fbd70e31a1791e571ed817d70975de7d3bfcbbbec93d77d1dd305877e9e8fdbcc62303c228ee5c3606685622cd6231c042dbc4790bb4e7c65fcbe18
   languageName: node
   linkType: hard
 
@@ -15610,36 +15764,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:0.35.3, sharp@npm:^0.35.3":
-  version: 0.35.3
-  resolution: "sharp@npm:0.35.3"
+"sharp@npm:0.35.4":
+  version: 0.35.4
+  resolution: "sharp@npm:0.35.4"
   dependencies:
     "@img/colour": "npm:^1.1.0"
-    "@img/sharp-darwin-arm64": "npm:0.35.3"
-    "@img/sharp-darwin-x64": "npm:0.35.3"
-    "@img/sharp-freebsd-wasm32": "npm:0.35.3"
-    "@img/sharp-libvips-darwin-arm64": "npm:1.3.2"
-    "@img/sharp-libvips-darwin-x64": "npm:1.3.2"
-    "@img/sharp-libvips-linux-arm": "npm:1.3.2"
-    "@img/sharp-libvips-linux-arm64": "npm:1.3.2"
-    "@img/sharp-libvips-linux-ppc64": "npm:1.3.2"
-    "@img/sharp-libvips-linux-riscv64": "npm:1.3.2"
-    "@img/sharp-libvips-linux-s390x": "npm:1.3.2"
-    "@img/sharp-libvips-linux-x64": "npm:1.3.2"
-    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.3.2"
-    "@img/sharp-libvips-linuxmusl-x64": "npm:1.3.2"
-    "@img/sharp-linux-arm": "npm:0.35.3"
-    "@img/sharp-linux-arm64": "npm:0.35.3"
-    "@img/sharp-linux-ppc64": "npm:0.35.3"
-    "@img/sharp-linux-riscv64": "npm:0.35.3"
-    "@img/sharp-linux-s390x": "npm:0.35.3"
-    "@img/sharp-linux-x64": "npm:0.35.3"
-    "@img/sharp-linuxmusl-arm64": "npm:0.35.3"
-    "@img/sharp-linuxmusl-x64": "npm:0.35.3"
-    "@img/sharp-webcontainers-wasm32": "npm:0.35.3"
-    "@img/sharp-win32-arm64": "npm:0.35.3"
-    "@img/sharp-win32-ia32": "npm:0.35.3"
-    "@img/sharp-win32-x64": "npm:0.35.3"
+    "@img/sharp-darwin-arm64": "npm:0.35.4"
+    "@img/sharp-darwin-x64": "npm:0.35.4"
+    "@img/sharp-freebsd-wasm32": "npm:0.35.4"
+    "@img/sharp-libvips-darwin-arm64": "npm:1.3.3"
+    "@img/sharp-libvips-darwin-x64": "npm:1.3.3"
+    "@img/sharp-libvips-linux-arm": "npm:1.3.3"
+    "@img/sharp-libvips-linux-arm64": "npm:1.3.3"
+    "@img/sharp-libvips-linux-ppc64": "npm:1.3.3"
+    "@img/sharp-libvips-linux-riscv64": "npm:1.3.3"
+    "@img/sharp-libvips-linux-s390x": "npm:1.3.3"
+    "@img/sharp-libvips-linux-x64": "npm:1.3.3"
+    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.3.3"
+    "@img/sharp-libvips-linuxmusl-x64": "npm:1.3.3"
+    "@img/sharp-linux-arm": "npm:0.35.4"
+    "@img/sharp-linux-arm64": "npm:0.35.4"
+    "@img/sharp-linux-ppc64": "npm:0.35.4"
+    "@img/sharp-linux-riscv64": "npm:0.35.4"
+    "@img/sharp-linux-s390x": "npm:0.35.4"
+    "@img/sharp-linux-x64": "npm:0.35.4"
+    "@img/sharp-linuxmusl-arm64": "npm:0.35.4"
+    "@img/sharp-linuxmusl-x64": "npm:0.35.4"
+    "@img/sharp-webcontainers-wasm32": "npm:0.35.4"
+    "@img/sharp-win32-arm64": "npm:0.35.4"
+    "@img/sharp-win32-ia32": "npm:0.35.4"
+    "@img/sharp-win32-x64": "npm:0.35.4"
     detect-libc: "npm:^2.1.2"
     semver: "npm:^7.8.5"
   dependenciesMeta:
@@ -15696,7 +15850,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: 10c0/d99d60fc716aacbf42fcb0eb6d129142e0912eb23310adf48bc94e6989e27c838c5b5f507b928c723c72d265f9ceea3d4b1207e8fd5929797b23005663ce1d07
+  checksum: 10c0/dbcc0909200cbff98e82805c86085b94afbd45f373897a04b21e52e9bbc1671dc64970350dd3cb6b2d0970f3444be7100d728005dc6620e39b599269ed7e15eb
   languageName: node
   linkType: hard
 
@@ -16798,17 +16952,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:4.1.8":
-  version: 4.1.8
-  resolution: "vitest@npm:4.1.8"
+"vitest@npm:4.1.11":
+  version: 4.1.11
+  resolution: "vitest@npm:4.1.11"
   dependencies:
-    "@vitest/expect": "npm:4.1.8"
-    "@vitest/mocker": "npm:4.1.8"
-    "@vitest/pretty-format": "npm:4.1.8"
-    "@vitest/runner": "npm:4.1.8"
-    "@vitest/snapshot": "npm:4.1.8"
-    "@vitest/spy": "npm:4.1.8"
-    "@vitest/utils": "npm:4.1.8"
+    "@vitest/expect": "npm:4.1.11"
+    "@vitest/mocker": "npm:4.1.11"
+    "@vitest/pretty-format": "npm:4.1.11"
+    "@vitest/runner": "npm:4.1.11"
+    "@vitest/snapshot": "npm:4.1.11"
+    "@vitest/spy": "npm:4.1.11"
+    "@vitest/utils": "npm:4.1.11"
     es-module-lexer: "npm:^2.0.0"
     expect-type: "npm:^1.3.0"
     magic-string: "npm:^0.30.21"
@@ -16826,12 +16980,12 @@ __metadata:
     "@edge-runtime/vm": "*"
     "@opentelemetry/api": ^1.9.0
     "@types/node": ^20.0.0 || ^22.0.0 || >=24.0.0
-    "@vitest/browser-playwright": 4.1.8
-    "@vitest/browser-preview": 4.1.8
-    "@vitest/browser-webdriverio": 4.1.8
-    "@vitest/coverage-istanbul": 4.1.8
-    "@vitest/coverage-v8": 4.1.8
-    "@vitest/ui": 4.1.8
+    "@vitest/browser-playwright": 4.1.11
+    "@vitest/browser-preview": 4.1.11
+    "@vitest/browser-webdriverio": 4.1.11
+    "@vitest/coverage-istanbul": 4.1.11
+    "@vitest/coverage-v8": 4.1.11
+    "@vitest/ui": 4.1.11
     happy-dom: "*"
     jsdom: "*"
     vite: ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -16861,8 +17015,8 @@ __metadata:
     vite:
       optional: false
   bin:
-    vitest: vitest.mjs
-  checksum: 10c0/f459c500f8818c7a2318cd23228b4e5c0b5efb25bf8e5cb7f116c6d26e51482b2f800a8bb19837c0b5f0d05c51519edbf502bc8ceb5bd86868e8facf1d2c498e
+    vitest: ./vitest.mjs
+  checksum: 10c0/3fa0948cf74adcccc8cbcdb4e6d30ada6933bdfb1816ff99200f3d3b689325b37dc483b22535b57b6d911f7a7b64eaa6a5f8da1606cfe7f2466f48000c21e296
   languageName: node
   linkType: hard
 

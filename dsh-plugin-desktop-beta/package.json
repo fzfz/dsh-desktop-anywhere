@@ -307,7 +307,7 @@
     "@deepseek-ai/dsh-workflow": "0.1.7-rc.2",
     "@deepseek-ai/dsh-workspace": "0.1.7-rc.2",
     "@deepseek-ai/schemastery": "^3.18.4",
-    "adm-zip": "^0.6.0",
+    "adm-zip": "0.6.1",
     "dsh-community-market": "0.1.0-dev.0",
     "dshmarket": "1.66.0",
     "fs-ext": "2.1.1",
