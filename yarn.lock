@@ -1418,7 +1418,7 @@ __metadata:
 
 "@deepseek-ai/dsh-api-session-controller@patch:@deepseek-ai/dsh-api-session-controller@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz#./patches/dsh-api-session-controller@0.1.7-rc.2.patch::locator=deepseek-harness-desktop%40workspace%3A.":
   version: 0.1.7-rc.2
-  resolution: "@deepseek-ai/dsh-api-session-controller@patch:@deepseek-ai/dsh-api-session-controller@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz%3A%3Ahash=a35959&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-api-session-controller@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=fc633d&locator=deepseek-harness-desktop%40workspace%3A."
+  resolution: "@deepseek-ai/dsh-api-session-controller@patch:@deepseek-ai/dsh-api-session-controller@file%3Avendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz%23vendor/dsh-runtime/0.1.7-rc.2/deepseek-ai-dsh-api-session-controller-0.1.7-rc.2.tgz%3A%3Ahash=a35959&locator=deepseek-harness-desktop%2540workspace%253A.#./patches/dsh-api-session-controller@0.1.7-rc.2.patch::version=0.1.7-rc.2&hash=f632a7&locator=deepseek-harness-desktop%40workspace%3A."
   dependencies:
     "@deepseek-ai/dsh-brand": "npm:0.1.7-rc.2"
     "@deepseek-ai/dsh-deque": "npm:0.1.7-rc.2"
@@ -1463,7 +1463,7 @@ __metadata:
       optional: true
     "@deepseek-ai/dsh-settings":
       optional: true
-  checksum: 10c0/b1379b67b575fee5993846c6db7e4966c76122d4941237bb87bb772610a38647fdbbbeb4c998628d5f0bf0648948351d1df44b31fba39c1b08c8b61e4a4d5ef1
+  checksum: 10c0/040060d5ce1d5e8e370b7349a491bbb4a1a06434583d1e653ef19aed7816fa3b82578b81825a27492eba817750f646e0b4a60912c70b7b5b092a2ca383f5261a
   languageName: node
   linkType: hard
 

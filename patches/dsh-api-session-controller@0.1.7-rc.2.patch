@@ -119,7 +119,7 @@ diff --git a/lib/typert.host.js b/lib/typert.host.js
        id: '@deepseek-ai/dsh-api-session-controller#session/follow',
        service: 'sessionController',
        namespace: 'session',
-@@ -1389,6 +1414,12 @@
+@@ -1389,6 +1414,13 @@
            },
            {
              "kind": "method",
@@ -129,6 +129,7 @@ diff --git a/lib/typert.host.js b/lib/typert.host.js
 +            "jsDoc": "/** Permanently delete one ordinary Session while retaining Workspace files. */"
 +          },
 +          {
++            "kind": "method",
              "name": "fork",
              "signature": "@Remote('fork') fork(request: SessionForkRequest): Promise<SessionForkValue>",
              "summary": "Fork one cold-readable exact event prefix into a new Session.",
